@@ -51,7 +51,27 @@ export class PlayerManager extends Entity {
 
     inputHandle(playerActionType: PLAYERACTION_TYPE) {
         if (this.willBlock(playerActionType)) {
-            console.log("block");
+            // if (playerActionType === PLAYERACTION_TYPE.ANTICLOCKWISE) {
+            //     this.state = ENTITY_STATE_ENUM.BLOCK_TURNLEFT;
+            // } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
+            //     this.state = ENTITY_STATE_ENUM.BLOCK_TURNRIGHT;
+            // } else {
+            //     switch (this.direction) {
+            //         case DIRECTION_ENUM.TOP: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
+            //         case DIRECTION_ENUM.BOTTOM: this.state = ENTITY_STATE_ENUM.BLOCK_BACK;break;
+            //         case DIRECTION_ENUM.LEFT: this.state = ENTITY_STATE_ENUM.BLOCK_LEFT;break;
+            //         case DIRECTION_ENUM.RIGHT: this.state = ENTITY_STATE_ENUM.BLOCK_RIGHT;break;
+            //     }
+            // }
+
+            switch (playerActionType) {
+                case PLAYERACTION_TYPE.UP_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
+                case PLAYERACTION_TYPE.DOWN_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_BACK;break;
+                case PLAYERACTION_TYPE.LEFT_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_LEFT;break;
+                case PLAYERACTION_TYPE.RIGHT_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_RIGHT;break;
+                case PLAYERACTION_TYPE.ANTICLOCKWISE: this.state = ENTITY_STATE_ENUM.BLOCK_TURNLEFT;break;
+                case PLAYERACTION_TYPE.CLOCKWISE: this.state = ENTITY_STATE_ENUM.BLOCK_TURNRIGHT;break;
+            }
             return;
         }
         this.move(playerActionType);
@@ -388,8 +408,8 @@ export class PlayerManager extends Entity {
             /**
              * 人物逆时针旋转
              */
-            let weaponNextX;
-            let weaponNextY;
+            let weaponNextX : number;
+            let weaponNextY : number;
             if (direction === DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
@@ -428,8 +448,8 @@ export class PlayerManager extends Entity {
             /**
              * 人物逆时针旋转
              */
-            let weaponNextX;
-            let weaponNextY;
+            let weaponNextX : number;
+            let weaponNextY : number;
             if (direction === DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上

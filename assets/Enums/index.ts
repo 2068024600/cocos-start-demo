@@ -100,7 +100,31 @@ export enum PARAMS_NAME_ENUM {
   /**
    * 方向枚举
    */
-  DIRECTION = 'DIRECTION'
+  DIRECTION = 'DIRECTION',
+  /**
+   * 前进阻塞
+   */
+  BLOCK_FRONT = 'BLOCK_FRONT',
+  /**
+   * 后退阻塞
+   */
+  BLOCK_BACK = 'BLOCK_BACK',
+  /**
+   * 左移阻塞
+   */
+  BLOCK_LEFT = 'BLOCK_LEFT',
+  /**
+   * 右移阻塞
+   */
+  BLOCK_RIGHT = 'BLOCK_RIGHT',
+  /**
+   * 左旋阻塞
+   */
+  BLOCK_TURNLEFT = 'BLOCK_TURNLEFT',
+  /**
+   * 右旋阻塞
+   */
+  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT'
 }
 
 export enum PARAMS_NAME_DIRECTIO_ENUM {
@@ -142,7 +166,31 @@ export enum ENTITY_STATE_ENUM {
   /**
    * 逆时针旋转
    */
-  ANTICLOCKWISE = 'ANTICLOCKWISE'
+  ANTICLOCKWISE = 'ANTICLOCKWISE',
+  /**
+   * 前进阻塞
+   */
+  BLOCK_FRONT = 'BLOCK_FRONT',
+  /**
+   * 后退阻塞
+   */
+  BLOCK_BACK = 'BLOCK_BACK',
+  /**
+   * 左移阻塞
+   */
+  BLOCK_LEFT = 'BLOCK_LEFT',
+  /**
+   * 右移阻塞
+   */
+  BLOCK_RIGHT = 'BLOCK_RIGHT',
+  /**
+   * 左旋阻塞
+   */
+  BLOCK_TURNLEFT = 'BLOCK_TURNLEFT',
+  /**
+   * 右旋阻塞
+   */
+  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT'
 }
 
 export enum ENTITY_TYPE_ENUM {

@@ -47,5 +47,7 @@ export default class State {
     // 播放动画
     this.fms.animationComponent.defaultClip = this.animationClip;
     this.fms.animationComponent.play();
+    console.log(this.path);
+
   }
 }
