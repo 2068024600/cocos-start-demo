@@ -117,7 +117,7 @@ export class PlayerManager extends Entity {
     }
 
     willBlock(playerActionType: PLAYERACTION_TYPE) {
-        const {x, y, direction} = this;
+        const {targetX: x, targetY: y, direction} = this;
         const { tileMapInfo } = DataManager.instance;
 
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
