@@ -44,10 +44,14 @@ export default class State {
   }
 
   run() {
+    /**
+     * 防止动画鬼畜播放
+     */
+    if (this.fms.animationComponent.defaultClip?.name === this.animationClip?.name) {
+      return;
+    }
     // 播放动画
     this.fms.animationComponent.defaultClip = this.animationClip;
     this.fms.animationComponent.play();
-    console.log(this.path);
-
   }
 }
