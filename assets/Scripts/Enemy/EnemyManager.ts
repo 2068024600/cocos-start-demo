@@ -35,9 +35,36 @@ export class EnemyManager extends Entity {
         this.state = ENTITY_STATE_ENUM.IDLE
     }
 
+    onLoad() {
+        EventResource.instance.add(EVENT_TYPE.PLAYER_BOTH, this.onchangeDirection, this);
+        EventResource.instance.add(EVENT_TYPE.ENEMY_TURN, this.onchangeDirection, this);
+    }
+
     update() {
         super.updatePosition();
     }
+
+    onchangeDirection(init = false) {
+        const {x: playerX, y: playerY } = DataManager.instance.playerInfo;
+        const x = Math.abs(playerX - this.x);
+        const y = Math.abs(playerY - this.y);
+        if (x === y && !init) {
+            return;
+        }
+        if (playerX >= this.x && playerY >= this.y) {
+            // 第一象限
+            x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.TOP
+        } else if (playerX <= this.x && playerY >= this.y) {
+            // 第二象限
+            x > y ? this.direction = DIRECTION_ENUM.LEFT : this.direction = DIRECTION_ENUM.TOP
+        } else if (playerX <= this.x && playerY <= this.y) {
+            // 第三象限
+            x > y ? this.direction = DIRECTION_ENUM.LEFT : this.direction = DIRECTION_ENUM.BOTTOM
+        } else if (playerX >= this.x && playerY <= this.y) {
+            // 第四象限
+            x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.BOTTOM
+        }
+      }
 
 }
 

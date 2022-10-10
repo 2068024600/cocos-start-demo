@@ -48,6 +48,8 @@ export default class EventResource extends Singleton {
       this.eventMap.get(eventName).forEach(({func, ctx}) => {
         ctx ? func.apply(ctx, param) : func(param);
       })
+    } else {
+      console.error("事件名称不存在...停止执行");
     }
   }
 

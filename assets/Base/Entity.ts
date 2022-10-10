@@ -1,17 +1,10 @@
 
 import { _decorator, Component, Node } from 'cc';
 import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, PARAMS_NAME_ENUM } from '../Enums';
+import { IEntity } from '../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 import { getParamNumber, getParamTrigget, StateMachine } from './StateMachine';
 const { ccclass, property } = _decorator;
-
-interface IEntityParams {
-    x: number;
-    y: number;
-    direction: DIRECTION_ENUM;
-    state: ENTITY_STATE_ENUM;
-    type: ENTITY_TYPE_ENUM;
-}
 
 @ccclass('Entity')
 export abstract class Entity extends Component {
@@ -46,11 +39,12 @@ export abstract class Entity extends Component {
         this.fsm.setParam(state, getParamTrigget(true))
     }
 
-    initParams(params : IEntityParams) {
+    initParams(params : IEntity) {
         this.x = params.x
         this.y = params.y
         this._direction = params.direction
         this._state = params.state
+        this.type = params.type
     }
 
     updatePosition() {

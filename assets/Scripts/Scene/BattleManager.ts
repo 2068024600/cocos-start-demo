@@ -3,10 +3,12 @@ import { TileMapManage } from '../Tile/TileMapManager';
 const { ccclass, property } = _decorator;
 import { createUINode, loadSpriteFrameResource } from '../../Utils';
 import DataManager from '../../RunTime/DataManager'
-import levels, { ILevel } from '../../Levels';
+import levels, { IEntity, ILevel } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PlayerManager } from '../Player/PlayerManager';
 import { EnemyManager } from '../Enemy/EnemyManager';
+import EventResource from '../../RunTime/EventManager';
+import { EVENT_TYPE } from '../../Enums';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -49,12 +51,10 @@ export class BatterManage extends Component {
             DataManager.instance.mapRowCount = level.mapInfo.length
             DataManager.instance.mapColCount = level.mapInfo[0].length
 
-            DataManager.instance.playerInfo = level.playerInfo;
-
             // 生成地图
             this.generateTileMap();
             // 生成人物
-            this.generatePlayer();
+            this.generatePlayer(level.playerInfo);
             // 生成敌人
             this.generateEnemy();
         }
@@ -83,7 +83,7 @@ export class BatterManage extends Component {
     /**
      * 生成地图
      */
-    generateTileMap() {
+    async generateTileMap() {
 
         // 创建瓦片地图
         this.tileMap = createUINode();
@@ -91,7 +91,7 @@ export class BatterManage extends Component {
 
         // 添加瓦片
         const tileMapManager = this.tileMap.addComponent(TileMapManage);
-        tileMapManager.init();
+        await tileMapManager.init();
 
         // 设置舞台位置,使整个地图居中
         this.setStageOffset();
@@ -100,20 +100,22 @@ export class BatterManage extends Component {
     /**
      * 生成角色
      */
-    generatePlayer() {
+    async generatePlayer(playerInfo: IEntity) {
         const player = createUINode();
         player.setParent(this.stage);
         const playerManager = player.addComponent(PlayerManager);
-        playerManager.init();
+        await playerManager.init(playerInfo);
+        DataManager.instance.playerInfo = playerManager;
+        EventResource.instance.exec(EVENT_TYPE.PLAYER_BOTH, [true]);
     }
 
     /**
      * 生成敌人
      */
-    generateEnemy() {
+    async generateEnemy() {
         const enemy = createUINode();
         enemy.setParent(this.stage);
         const enemyManager = enemy.addComponent(EnemyManager);
-        enemyManager.init()
+        await enemyManager.init()
     }
 }

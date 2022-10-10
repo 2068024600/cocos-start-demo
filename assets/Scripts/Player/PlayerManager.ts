@@ -5,6 +5,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PLAYERACTION_TYPE, EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM } from '../../Enums'
 import { PlayerStateMachine } from './PlayerStateMachine';
 import { Entity } from '../../Base/Entity';
+import { IEntity } from '../../Levels';
 const { ccclass, property } = _decorator;
 
 // 人物大小
@@ -15,8 +16,10 @@ const PLAYER_HEIGHT = TILE_HEIGHT * 4;
 export class PlayerManager extends Entity {
 
     // 定义人物坐标
-    targetX: number = DataManager.instance.playerInfo.position.x;
-    targetY: number = DataManager.instance.playerInfo.position.y;
+    targetX: number;
+    targetY: number;
+
+    isMoving = false;
 
     /**
      * 移动速度
@@ -41,9 +44,12 @@ export class PlayerManager extends Entity {
         }
 
         // 防止人物移动完成后，贴图闪烁的问题
-        if (Math.abs(this.x - this.targetX) <= 0.1 && Math.abs(this.y - this.targetY) <= 0.1) {
+        if (Math.abs(this.x - this.targetX) <= 0.1 && Math.abs(this.y - this.targetY) <= 0.1 && this.isMoving) {
             this.x = this.targetX;
             this.y = this.targetY;
+            this.isMoving = false;
+            DataManager.instance.playerInfo = this;
+            EventResource.instance.exec(EVENT_TYPE.ENEMY_TURN);
         }
         // 设置人物的位置
         super.updatePosition()
@@ -67,12 +73,16 @@ export class PlayerManager extends Entity {
     move(playerActionType: PLAYERACTION_TYPE) {
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
             this.targetY++;
+            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.DOWN_MOVE) {
             this.targetY--;
+            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.LEFT_MOVE) {
             this.targetX--;
+            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE) {
             this.targetX++;
+            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.CLOCKWISE;
             this.direction = (this.direction + 1) % 4;
@@ -82,14 +92,13 @@ export class PlayerManager extends Entity {
         }
     }
 
-    async init() {
-        super.initParams({
-            x: DataManager.instance.playerInfo.position.x,
-            y: DataManager.instance.playerInfo.position.y,
-            direction: DIRECTION_ENUM.TOP,
-            state: ENTITY_STATE_ENUM.IDLE,
-            type: ENTITY_TYPE_ENUM.PALYER
-        });
+    async init(playerInfo: IEntity) {
+        /**
+         * 参数初始化
+         */
+        super.initParams(playerInfo);
+        this.targetX = playerInfo.x;
+        this.targetY = playerInfo.y;
 
         const sprite = this.addComponent(Sprite);
         sprite.sizeMode = Sprite.SizeMode.CUSTOM;

@@ -1,5 +1,5 @@
-import { TILE_TYPE_ENUM } from '../Enums';
-import { ILevel } from './index';
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
+import { IEntity, ILevel } from './index';
 
 /**
  * 地图瓦片信息
@@ -427,11 +427,12 @@ const mapInfo = [
   ],
 ];
 
-const playerInfo = {
-  position: {
-    x: 2,
-    y: -8
-  }
+const playerInfo: IEntity = {
+  x: 2,
+  y: -8,
+  direction: DIRECTION_ENUM.TOP,
+  state: ENTITY_STATE_ENUM.IDLE,
+  type: ENTITY_TYPE_ENUM.PALYER,
 }
 
 

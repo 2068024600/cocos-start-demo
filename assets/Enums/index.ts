@@ -48,7 +48,11 @@ export enum EVENT_TYPE {
   // 下一关
   NEXT_LEVEL = 'NEXT_LEVEL',
   // 人物移动
-  PLAYER_MOVE = 'PLAYER_MOVE'
+  PLAYER_MOVE = 'PLAYER_MOVE',
+  // 人物生成
+  PLAYER_BOTH = 'PLAYER_BOTH',
+  // 怪物转向
+  ENEMY_TURN = 'ENEMY_TURN'
 }
 
 /**
@@ -194,5 +198,12 @@ export enum ENTITY_STATE_ENUM {
 }
 
 export enum ENTITY_TYPE_ENUM {
-  PALYER = 'PALYER'
+  /**
+   * 玩家
+   */
+  PALYER = 'PALYER',
+  /**
+   * 敌人
+   */
+  ENEMY = 'ENEMY'
 }

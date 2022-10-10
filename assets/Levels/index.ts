@@ -1,17 +1,18 @@
 import level1 from "./level1";
 import level2 from "./level2";
-import { TILE_TYPE_ENUM } from '../Enums'
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums'
 
 export interface ITile {
   src: number | null,
   type: TILE_TYPE_ENUM | null
 }
 
-export interface IPlayer {
-  position: {
-    x: number,
-    y: number
-  }
+export interface IEntity {
+  x: number;
+  y: number;
+  direction: DIRECTION_ENUM;
+  state: ENTITY_STATE_ENUM;
+  type: ENTITY_TYPE_ENUM;
 }
 
 /**
@@ -19,7 +20,7 @@ export interface IPlayer {
  */
 export interface ILevel {
   mapInfo: Array<Array<ITile>>,
-  playerInfo: IPlayer
+  playerInfo: IEntity
 }
 
 const levels: Record<string, ILevel> = {
