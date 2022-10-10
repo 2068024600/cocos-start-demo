@@ -51,19 +51,6 @@ export class PlayerManager extends Entity {
 
     inputHandle(playerActionType: PLAYERACTION_TYPE) {
         if (this.willBlock(playerActionType)) {
-            // if (playerActionType === PLAYERACTION_TYPE.ANTICLOCKWISE) {
-            //     this.state = ENTITY_STATE_ENUM.BLOCK_TURNLEFT;
-            // } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
-            //     this.state = ENTITY_STATE_ENUM.BLOCK_TURNRIGHT;
-            // } else {
-            //     switch (this.direction) {
-            //         case DIRECTION_ENUM.TOP: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
-            //         case DIRECTION_ENUM.BOTTOM: this.state = ENTITY_STATE_ENUM.BLOCK_BACK;break;
-            //         case DIRECTION_ENUM.LEFT: this.state = ENTITY_STATE_ENUM.BLOCK_LEFT;break;
-            //         case DIRECTION_ENUM.RIGHT: this.state = ENTITY_STATE_ENUM.BLOCK_RIGHT;break;
-            //     }
-            // }
-
             switch (playerActionType) {
                 case PLAYERACTION_TYPE.UP_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
                 case PLAYERACTION_TYPE.DOWN_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_BACK;break;

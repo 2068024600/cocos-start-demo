@@ -29,10 +29,22 @@ export const loadSpriteFrameResource = (path: string) => {
 }
 
 /**
- * 生成start ～ end的随机数
+ * 生成start - end的随机数
  * @param start
  * @param end
  */
 export const randomIntValue = (start: number, end: number): number => {
   return Math.floor(start + (end - start) * Math.random());
 }
+
+const getNumberInString = (str: String) => {
+  const reg = /\((\d+)\)/;
+  return parseInt(str.match(reg)[1] || '0');
+}
+
+/**
+ * spriteFrame资源排序
+ * @param spriteFrames
+ * @returns
+ */
+export const spriteFrameSort = (spriteFrames: Array<SpriteFrame>) => spriteFrames.sort((a, b) => getNumberInString(a.name) - getNumberInString(b.name))

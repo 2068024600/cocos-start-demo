@@ -5,10 +5,8 @@ import { createUINode, loadSpriteFrameResource } from '../../Utils';
 import DataManager from '../../RunTime/DataManager'
 import levels, { ILevel } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
-import ResourcesManager from '../../RunTime/ResourceManager';
-import EventResource from '../../RunTime/EventManager';
-import { EVENT_TYPE } from '../../Enums';
 import { PlayerManager } from '../Player/PlayerManager';
+import { EnemyManager } from '../Enemy/EnemyManager';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -18,18 +16,6 @@ export class BatterManage extends Component {
     stage: Node
     // 瓦片地图结点
     tileMap: Node
-
-    // onLoad() {
-    //     // 绑定进入下一关事件
-    //     EventResource.instance.add(EVENT_TYPE.NEXT_LEVEL, this.destroyNode, this);
-    //     EventResource.instance.add(EVENT_TYPE.NEXT_LEVEL, this.nextLevel, this);
-    // }
-
-    // onDestroy() {
-    //     // 解绑事件
-    //     EventResource.instance.remove(EVENT_TYPE.NEXT_LEVEL, this.destroyNode);
-    //     EventResource.instance.remove(EVENT_TYPE.NEXT_LEVEL, this.nextLevel);
-    // }
 
     /**
      * 进入下一关
@@ -69,6 +55,8 @@ export class BatterManage extends Component {
             this.generateTileMap();
             // 生成人物
             this.generatePlayer();
+            // 生成敌人
+            this.generateEnemy();
         }
     }
 
@@ -91,17 +79,6 @@ export class BatterManage extends Component {
         const yOffset = mapColCount * TILE_HEIGHT / 2 + 100
         this.stage.setPosition(-xOffset, yOffset)
     }
-
-    // async loadResource() {
-    //     // 加载地图资源路径
-    //     const path = "texture/tile/tile";
-    //     const spriteFrames = await loadSpriteFrameResource(path);
-    //     if (spriteFrames) {
-    //         ResourcesManager.instance.mapResouces = spriteFrames;
-    //         const tileMapManager = this.tileMap.getComponent(TileMapManage);
-    //         tileMapManager.init()
-    //     }
-    // }
 
     /**
      * 生成地图
@@ -130,4 +107,13 @@ export class BatterManage extends Component {
         playerManager.init();
     }
 
+    /**
+     * 生成敌人
+     */
+    generateEnemy() {
+        const enemy = createUINode();
+        enemy.setParent(this.stage);
+        const enemyManager = enemy.addComponent(EnemyManager);
+        enemyManager.init()
+    }
 }

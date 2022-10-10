@@ -1,5 +1,5 @@
 import { _decorator, AnimationClip, Sprite, animation, SpriteFrame } from 'cc';
-import { loadSpriteFrameResource } from "../Utils";
+import { loadSpriteFrameResource, spriteFrameSort } from "../Utils";
 import { StateMachine } from "./StateMachine";
 
 // 人物播放的动画速度
@@ -34,7 +34,7 @@ export default class State {
     const track = new animation.ObjectTrack();
     // 指定轨道路径，即指定目标对象为 Sprite 的 spriteFrame 属性
     track.path = new animation.TrackPath().toComponent(Sprite).toProperty('spriteFrame');
-    const frames : Array<[number, SpriteFrame]> = spriteFrames.map((item, index) => [ANIMATION_SPEED * index, item]);
+    const frames : Array<[number, SpriteFrame]> = spriteFrameSort(spriteFrames).map((item, index) => [ANIMATION_SPEED * index, item]);
     track.channel.curve.assignSorted(frames);
 
     // 最后将轨道添加到动画剪辑以应用
