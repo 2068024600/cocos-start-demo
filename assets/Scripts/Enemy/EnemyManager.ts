@@ -51,6 +51,7 @@ export class EnemyManager extends Entity {
         if (x === y && !init) {
             return;
         }
+        this.state = ENTITY_STATE_ENUM.IDLE;
         if (playerX >= this.x && playerY >= this.y) {
             // 第一象限
             x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.TOP
@@ -63,6 +64,11 @@ export class EnemyManager extends Entity {
         } else if (playerX >= this.x && playerY <= this.y) {
             // 第四象限
             x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.BOTTOM
+        }
+
+        /* 敌人攻击逻辑当玩家距离敌人一格位置后,发动攻击 */
+        if (x+y === 1) {
+            this.state = ENTITY_STATE_ENUM.ATTACK;
         }
       }
 

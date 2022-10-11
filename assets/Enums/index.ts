@@ -128,7 +128,11 @@ export enum PARAMS_NAME_ENUM {
   /**
    * 右旋阻塞
    */
-  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT'
+  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT',
+  /**
+   * 攻击
+   */
+  ATTACK = 'ATTACK',
 }
 
 export enum PARAMS_NAME_DIRECTIO_ENUM {
@@ -194,7 +198,11 @@ export enum ENTITY_STATE_ENUM {
   /**
    * 右旋阻塞
    */
-  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT'
+  BLOCK_TURNRIGHT = 'BLOCK_TURNRIGHT',
+  /**
+   * 攻击
+   */
+   ATTACK = 'ATTACK',
 }
 
 export enum ENTITY_TYPE_ENUM {
