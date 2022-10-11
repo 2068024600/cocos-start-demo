@@ -117,5 +117,6 @@ export class BatterManage extends Component {
         enemy.setParent(this.stage);
         const enemyManager = enemy.addComponent(EnemyManager);
         await enemyManager.init()
+        DataManager.instance.enemyInfo.push(enemyManager);
     }
 }

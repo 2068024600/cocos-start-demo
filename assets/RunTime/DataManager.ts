@@ -38,7 +38,7 @@ export default class DataManager extends Singleton {
   /**
    * 敌人信息
    */
-  enemyInfo: Array<EnemyManager>;
+  enemyInfo: Array<EnemyManager> = [];
 
   /**
    * 地图瓦片信息

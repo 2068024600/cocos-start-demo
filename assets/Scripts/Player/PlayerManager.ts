@@ -67,6 +67,10 @@ export class PlayerManager extends Entity {
         if (!this.isLive) {
             return;
         }
+        if (this.attack(playerActionType)) {
+            this.state = ENTITY_STATE_ENUM.ATTACK;
+            return;
+        }
         if (this.willBlock(playerActionType)) {
             switch (playerActionType) {
                 case PLAYERACTION_TYPE.UP_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
@@ -81,6 +85,10 @@ export class PlayerManager extends Entity {
         this.move(playerActionType);
     }
 
+    /**
+     * 人物移动逻辑
+     * @param playerActionType
+     */
     move(playerActionType: PLAYERACTION_TYPE) {
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
             this.targetY++;
@@ -103,10 +111,53 @@ export class PlayerManager extends Entity {
         }
     }
 
+    /**
+     * 人物死亡逻辑
+     */
     death() {
         this.state = ENTITY_STATE_ENUM.DEATH;
         // 修改人物状态
         this.isLive = false;
+    }
+
+    /**
+     * 人物攻击逻辑
+     * @param playerActionType
+     */
+    attack(playerActionType: PLAYERACTION_TYPE) {
+        for (const enemy of DataManager.instance.enemyInfo) {
+            const {x: enemyX, y: enemyY} = enemy;
+            if (
+                this.direction === DIRECTION_ENUM.TOP &&
+                playerActionType === PLAYERACTION_TYPE.UP_MOVE &&
+                enemyY === this.targetY + 2 &&
+                enemyX === this.x
+              ) {
+                return true
+              } else if (
+                this.direction === DIRECTION_ENUM.BOTTOM &&
+                playerActionType === PLAYERACTION_TYPE.DOWN_MOVE &&
+                enemyY === this.targetY - 2 &&
+                enemyX === this.x
+              ) {
+                return true
+              } else if (
+                this.direction === DIRECTION_ENUM.LEFT &&
+                playerActionType === PLAYERACTION_TYPE.LEFT_MOVE &&
+                enemyX === this.targetX - 2 &&
+                enemyY === this.y
+              ) {
+                return true
+              } else if (
+                this.direction === DIRECTION_ENUM.RIGHT &&
+                playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE &&
+                enemyX === this.targetX + 2 &&
+                enemyY === this.y
+              ) {
+                return true
+              }
+        }
+        return false;
     }
 
     async init(playerInfo: IEntity) {

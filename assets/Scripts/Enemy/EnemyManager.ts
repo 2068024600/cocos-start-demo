@@ -17,7 +17,7 @@ export class EnemyManager extends Entity {
 
     async init() {
         super.initParams({
-            x: 7,
+            x: 2,
             y: -6,
             direction: DIRECTION_ENUM.TOP,
             state: ENTITY_STATE_ENUM.IDLE,
