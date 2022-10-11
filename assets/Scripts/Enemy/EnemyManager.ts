@@ -5,6 +5,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PLAYERACTION_TYPE, EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM } from '../../Enums';
 import { Entity } from '../../Base/Entity';
 import { EnemyStateMachine } from './EnemyStateMachine';
+import { PlayerManager } from '../Player/PlayerManager';
 const { ccclass, property } = _decorator;
 
 // 人物大小
@@ -69,6 +70,8 @@ export class EnemyManager extends Entity {
         /* 敌人攻击逻辑当玩家距离敌人一格位置后,发动攻击 */
         if (x+y === 1) {
             this.state = ENTITY_STATE_ENUM.ATTACK;
+            // 角色死亡
+            EventResource.instance.exec(EVENT_TYPE.PLAYER_DEATH);
         }
       }
 

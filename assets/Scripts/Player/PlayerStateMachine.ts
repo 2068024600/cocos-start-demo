@@ -1,9 +1,7 @@
 import { _decorator, AnimationClip, AnimationComponent } from 'cc';
 const { ccclass, property } = _decorator;
-import { FSM_PARAM_TYPE_ENUM, PARAMS_NAME_ENUM } from '../../Enums'
-import State from '../../Base/State';
+import { PARAMS_NAME_ENUM } from '../../Enums';
 import { getParamTrigget, getParamNumber, StateMachine } from '../../Base/StateMachine';
-import { SubStateMachine } from '../../Base/SubStateMachine';
 import { IdleSubMachine } from './IdleSubMachine';
 import { ClockWiseSubMachine } from './ClockWiseSubMachine';
 import { AntiClockWiseSubMachine } from './AntiClockWiseSubMachine';
@@ -13,6 +11,7 @@ import { BlockLeftSubMachine } from './BlockLeftSubMachine';
 import { BlockRightSubMachine } from './BlockRightSubMachine';
 import { BlockTurnLeftSubMachine } from './BlockTurnLeftSubMachine';
 import { BlockTurnRightSubMachine } from './BlockTurnRightSubMachine';
+import { DeathSubMachine } from './DeathSubMachine';
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -37,6 +36,7 @@ export class PlayerStateMachine extends StateMachine {
     this.params.set(PARAMS_NAME_ENUM.BLOCK_RIGHT, getParamTrigget(false));
     this.params.set(PARAMS_NAME_ENUM.BLOCK_TURNLEFT, getParamTrigget(false));
     this.params.set(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT, getParamTrigget(false));
+    this.params.set(PARAMS_NAME_ENUM.DEATH, getParamTrigget(false));
   }
 
   initStateMachines() {
@@ -49,6 +49,7 @@ export class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCK_RIGHT, new BlockRightSubMachine(this));
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCK_TURNLEFT, new BlockTurnLeftSubMachine(this));
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT, new BlockTurnRightSubMachine(this));
+    this.stateMachines.set(PARAMS_NAME_ENUM.DEATH, new DeathSubMachine(this));
   }
 
   run() {
@@ -80,6 +81,8 @@ export class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_TURNLEFT);
         } else if (this.params.get(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT).value){
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT);
+        } else if (this.params.get(PARAMS_NAME_ENUM.DEATH).value) {
+          this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.DEATH);
         }
         break;
       default:

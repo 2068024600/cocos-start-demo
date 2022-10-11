@@ -45,14 +45,28 @@ export enum TILE_TYPE_ENUM {
  * 场景事件类型
  */
 export enum EVENT_TYPE {
-  // 下一关
+  /**
+   * 下一关
+   */
   NEXT_LEVEL = 'NEXT_LEVEL',
-  // 人物移动
+
+  /**
+   * 人物移动
+   */
   PLAYER_MOVE = 'PLAYER_MOVE',
-  // 人物生成
+  /**
+   * 人物生成
+   */
   PLAYER_BOTH = 'PLAYER_BOTH',
-  // 怪物转向
-  ENEMY_TURN = 'ENEMY_TURN'
+  /**
+   * 人物死亡
+   */
+  PLAYER_DEATH = 'PLAYER_DEATH',
+  /**
+   * 怪物转向
+   */
+  ENEMY_TURN = 'ENEMY_TURN',
+
 }
 
 /**
@@ -133,6 +147,10 @@ export enum PARAMS_NAME_ENUM {
    * 攻击
    */
   ATTACK = 'ATTACK',
+  /**
+   * 死亡
+   */
+  DEATH = 'DEATH',
 }
 
 export enum PARAMS_NAME_DIRECTIO_ENUM {
@@ -202,7 +220,11 @@ export enum ENTITY_STATE_ENUM {
   /**
    * 攻击
    */
-   ATTACK = 'ATTACK',
+  ATTACK = 'ATTACK',
+  /**
+   * 死亡
+   */
+  DEATH = 'DEATH',
 }
 
 export enum ENTITY_TYPE_ENUM {

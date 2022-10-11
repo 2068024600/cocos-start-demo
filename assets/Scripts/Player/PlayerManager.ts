@@ -18,16 +18,24 @@ export class PlayerManager extends Entity {
     // 定义人物坐标
     targetX: number;
     targetY: number;
-
+    /**
+     * 人物是否正在移动
+     */
     isMoving = false;
+    /**
+     * 人物是否死亡
+     */
+    private isLive = true;
 
     /**
      * 移动速度
      */
     private readonly speed: number = 1 / 10;
 
+
     onLoad() {
         EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE, this.inputHandle, this)
+        EventResource.instance.add(EVENT_TYPE.PLAYER_DEATH, this.death, this);
     }
 
     update() {
@@ -56,6 +64,9 @@ export class PlayerManager extends Entity {
     }
 
     inputHandle(playerActionType: PLAYERACTION_TYPE) {
+        if (!this.isLive) {
+            return;
+        }
         if (this.willBlock(playerActionType)) {
             switch (playerActionType) {
                 case PLAYERACTION_TYPE.UP_MOVE: this.state = ENTITY_STATE_ENUM.BLOCK_FRONT;break;
@@ -90,6 +101,12 @@ export class PlayerManager extends Entity {
             this.state = ENTITY_STATE_ENUM.ANTICLOCKWISE;
             this.direction = (this.direction + 4 - 1) % 4;
         }
+    }
+
+    death() {
+        this.state = ENTITY_STATE_ENUM.DEATH;
+        // 修改人物状态
+        this.isLive = false;
     }
 
     async init(playerInfo: IEntity) {
