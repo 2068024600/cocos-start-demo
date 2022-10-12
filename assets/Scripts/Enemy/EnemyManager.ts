@@ -39,6 +39,7 @@ export class EnemyManager extends Entity {
     onLoad() {
         EventResource.instance.add(EVENT_TYPE.PLAYER_BOTH, this.onchangeDirection, this);
         EventResource.instance.add(EVENT_TYPE.ENEMY_TURN, this.onchangeDirection, this);
+        EventResource.instance.add(EVENT_TYPE.ENEMY_DEATH, this.death, this);
     }
 
     update() {
@@ -46,6 +47,12 @@ export class EnemyManager extends Entity {
     }
 
     onchangeDirection(init = false) {
+        /**
+         * 怪物死亡无法进行操作
+         */
+        if (this.state === ENTITY_STATE_ENUM.DEATH) {
+            return;
+        }
         const {x: playerX, y: playerY } = DataManager.instance.playerInfo;
         const x = Math.abs(playerX - this.x);
         const y = Math.abs(playerY - this.y);
@@ -73,7 +80,13 @@ export class EnemyManager extends Entity {
             // 角色死亡
             EventResource.instance.exec(EVENT_TYPE.PLAYER_DEATH);
         }
-      }
+    }
+
+    death(id: string) {
+        if (id === this.id) {
+            this.state = ENTITY_STATE_ENUM.DEATH;
+        }
+    }
 
 }
 

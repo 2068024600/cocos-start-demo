@@ -66,7 +66,10 @@ export enum EVENT_TYPE {
    * 怪物转向
    */
   ENEMY_TURN = 'ENEMY_TURN',
-
+  /**
+   * 怪物死亡
+   */
+  ENEMY_DEATH = 'ENEMY_DEATH'
 }
 
 /**

@@ -53,10 +53,10 @@ export class BatterManage extends Component {
 
             // 生成地图
             this.generateTileMap();
-            // 生成人物
-            this.generatePlayer(level.playerInfo);
             // 生成敌人
             this.generateEnemy();
+            // 生成人物
+            this.generatePlayer(level.playerInfo);
         }
     }
 

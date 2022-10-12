@@ -3,11 +3,14 @@ import { _decorator, Component, Node } from 'cc';
 import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, PARAMS_NAME_ENUM } from '../Enums';
 import { IEntity } from '../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
+import { generateNumString } from '../Utils';
 import { getParamNumber, getParamTrigget, StateMachine } from './StateMachine';
 const { ccclass, property } = _decorator;
 
 @ccclass('Entity')
 export abstract class Entity extends Component {
+
+    id: string = generateNumString(10);
 
     // 定义人物坐标
     x: number
@@ -19,7 +22,7 @@ export abstract class Entity extends Component {
     private _direction: DIRECTION_ENUM = DIRECTION_ENUM.TOP;
     private _state: ENTITY_STATE_ENUM = ENTITY_STATE_ENUM.IDLE;
 
-    private type: ENTITY_TYPE_ENUM
+    private _type: ENTITY_TYPE_ENUM
 
     public get direction() {
         return this._direction;
@@ -36,7 +39,15 @@ export abstract class Entity extends Component {
 
     public set state(state: ENTITY_STATE_ENUM) {
         this._state = state;
-        this.fsm.setParam(state, getParamTrigget(true))
+        this.fsm.setParam(state, getParamTrigget(true));
+    }
+
+    public set type(type: ENTITY_TYPE_ENUM) {
+        this._type = type;
+    }
+
+    public get type() {
+        return this._type;
     }
 
     initParams(params : IEntity) {

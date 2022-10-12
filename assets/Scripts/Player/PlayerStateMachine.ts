@@ -1,6 +1,6 @@
 import { _decorator, AnimationClip, AnimationComponent } from 'cc';
 const { ccclass, property } = _decorator;
-import { PARAMS_NAME_ENUM } from '../../Enums';
+import { ENTITY_STATE_ENUM, PARAMS_NAME_ENUM } from '../../Enums';
 import { getParamTrigget, getParamNumber, StateMachine } from '../../Base/StateMachine';
 import { IdleSubMachine } from './IdleSubMachine';
 import { ClockWiseSubMachine } from './ClockWiseSubMachine';
@@ -13,6 +13,7 @@ import { BlockTurnLeftSubMachine } from './BlockTurnLeftSubMachine';
 import { BlockTurnRightSubMachine } from './BlockTurnRightSubMachine';
 import { DeathSubMachine } from './DeathSubMachine';
 import { ATKSubMachine } from './ATKSubMachine';
+import { PlayerManager } from './PlayerManager';
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -102,7 +103,7 @@ export class PlayerStateMachine extends StateMachine {
       const name = this.animationComponent.defaultClip.name;
       const trigger = ['turn', 'block', 'attack'];
       if (trigger.find(value => name.includes(value))) {
-        this.setParam(PARAMS_NAME_ENUM.IDLE, getParamTrigget(true));
+        this.getComponent(PlayerManager).state = ENTITY_STATE_ENUM.IDLE;
       }
     })
   }

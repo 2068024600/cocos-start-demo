@@ -2,7 +2,7 @@ import { _decorator, UITransform, Sprite } from 'cc';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
-import { PLAYERACTION_TYPE, EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM } from '../../Enums'
+import { PLAYERACTION_TYPE, EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM } from '../../Enums'
 import { PlayerStateMachine } from './PlayerStateMachine';
 import { Entity } from '../../Base/Entity';
 import { IEntity } from '../../Levels';
@@ -22,10 +22,6 @@ export class PlayerManager extends Entity {
      * 人物是否正在移动
      */
     isMoving = false;
-    /**
-     * 人物是否死亡
-     */
-    private isLive = true;
 
     /**
      * 移动速度
@@ -64,11 +60,16 @@ export class PlayerManager extends Entity {
     }
 
     inputHandle(playerActionType: PLAYERACTION_TYPE) {
-        if (!this.isLive) {
+        /**
+         * 若人物已经死亡或者正在做攻击动作
+         */
+        if (this.state === ENTITY_STATE_ENUM.DEATH || this.state === ENTITY_STATE_ENUM.ATTACK) {
             return;
         }
-        if (this.attack(playerActionType)) {
+        const id = this.attack(playerActionType);
+        if (id) {
             this.state = ENTITY_STATE_ENUM.ATTACK;
+            EventResource.instance.exec(EVENT_TYPE.ENEMY_DEATH, [id]);
             return;
         }
         if (this.willBlock(playerActionType)) {
@@ -116,8 +117,6 @@ export class PlayerManager extends Entity {
      */
     death() {
         this.state = ENTITY_STATE_ENUM.DEATH;
-        // 修改人物状态
-        this.isLive = false;
     }
 
     /**
@@ -125,39 +124,43 @@ export class PlayerManager extends Entity {
      * @param playerActionType
      */
     attack(playerActionType: PLAYERACTION_TYPE) {
-        for (const enemy of DataManager.instance.enemyInfo) {
-            const {x: enemyX, y: enemyY} = enemy;
+        /**
+         * 当有敌人在人物朝向方向且距离两格远时，攻击敌人
+         */
+        const enemyList = DataManager.instance.enemyInfo.filter(value => value.state !== ENTITY_STATE_ENUM.DEATH);
+        for (const enemy of enemyList) {
+            const {x: enemyX, y: enemyY, id: enemyId} = enemy;
             if (
                 this.direction === DIRECTION_ENUM.TOP &&
                 playerActionType === PLAYERACTION_TYPE.UP_MOVE &&
                 enemyY === this.targetY + 2 &&
                 enemyX === this.x
               ) {
-                return true
+                return enemyId
               } else if (
                 this.direction === DIRECTION_ENUM.BOTTOM &&
                 playerActionType === PLAYERACTION_TYPE.DOWN_MOVE &&
                 enemyY === this.targetY - 2 &&
                 enemyX === this.x
               ) {
-                return true
+                return enemyId
               } else if (
                 this.direction === DIRECTION_ENUM.LEFT &&
                 playerActionType === PLAYERACTION_TYPE.LEFT_MOVE &&
                 enemyX === this.targetX - 2 &&
                 enemyY === this.y
               ) {
-                return true
+                return enemyId
               } else if (
                 this.direction === DIRECTION_ENUM.RIGHT &&
                 playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE &&
                 enemyX === this.targetX + 2 &&
                 enemyY === this.y
               ) {
-                return true
+                return enemyId
               }
         }
-        return false;
+        return '';
     }
 
     async init(playerInfo: IEntity) {

@@ -48,3 +48,10 @@ const getNumberInString = (str: String) => {
  * @returns
  */
 export const spriteFrameSort = (spriteFrames: Array<SpriteFrame>) => spriteFrames.sort((a, b) => getNumberInString(a.name) - getNumberInString(b.name))
+
+/**
+ * 生成指定长度的id
+ * @param len
+ * @returns
+ */
+export const generateNumString = (len: number) => Array.from({ length: len }).reduce<string>((total: string) => total + Math.floor(Math.random() * 10), '')
