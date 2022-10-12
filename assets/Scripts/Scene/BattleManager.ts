@@ -9,6 +9,7 @@ import { PlayerManager } from '../Player/PlayerManager';
 import { EnemyManager } from '../Enemy/EnemyManager';
 import EventResource from '../../RunTime/EventManager';
 import { EVENT_TYPE } from '../../Enums';
+import { DoorManager } from '../Door/DoorManager';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -55,6 +56,8 @@ export class BatterManage extends Component {
             this.generateTileMap();
             // 生成敌人
             this.generateEnemy();
+            // 生成门
+            this.generateDoor();
             // 生成人物
             this.generatePlayer(level.playerInfo);
         }
@@ -106,7 +109,8 @@ export class BatterManage extends Component {
         const playerManager = player.addComponent(PlayerManager);
         await playerManager.init(playerInfo);
         DataManager.instance.playerInfo = playerManager;
-        EventResource.instance.exec(EVENT_TYPE.PLAYER_BOTH, [true]);
+        // 怪物自动转向到人物方向
+        EventResource.instance.exec(EVENT_TYPE.ENEMY_TURN);
     }
 
     /**
@@ -116,7 +120,18 @@ export class BatterManage extends Component {
         const enemy = createUINode();
         enemy.setParent(this.stage);
         const enemyManager = enemy.addComponent(EnemyManager);
-        await enemyManager.init()
+        await enemyManager.init();
         DataManager.instance.enemyInfo.push(enemyManager);
+    }
+
+    /**
+     * 生成门
+     */
+     async generateDoor() {
+        const door = createUINode();
+        door.setParent(this.stage);
+        const doorManager = door.addComponent(DoorManager);
+        await doorManager.init();
+        DataManager.instance.doorInfo = doorManager;
     }
 }

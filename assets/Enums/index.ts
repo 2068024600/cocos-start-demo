@@ -49,7 +49,6 @@ export enum EVENT_TYPE {
    * 下一关
    */
   NEXT_LEVEL = 'NEXT_LEVEL',
-
   /**
    * 人物移动
    */
@@ -69,7 +68,11 @@ export enum EVENT_TYPE {
   /**
    * 怪物死亡
    */
-  ENEMY_DEATH = 'ENEMY_DEATH'
+  ENEMY_DEATH = 'ENEMY_DEATH',
+  /**
+   * 开门
+   */
+  DOOR_OPEN = 'DOOR_OPEN'
 }
 
 /**
@@ -238,5 +241,9 @@ export enum ENTITY_TYPE_ENUM {
   /**
    * 敌人
    */
-  ENEMY = 'ENEMY'
+  ENEMY = 'ENEMY',
+  /**
+   * 门
+   */
+  DOOR = 'DOOR'
 }

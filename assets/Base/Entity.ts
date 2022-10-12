@@ -54,7 +54,7 @@ export abstract class Entity extends Component {
         this.x = params.x
         this.y = params.y
         this._direction = params.direction
-        this._state = params.state
+        this.state = params.state
         this.type = params.type
     }
 

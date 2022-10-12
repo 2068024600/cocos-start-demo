@@ -1,7 +1,7 @@
 export default class Singleton {
   private static _instance = null;
 
-  public static getInstance<T>(): T {
+  protected static getInstance<T>(): T {
     if (!this._instance) {
       this._instance = new this();
     }

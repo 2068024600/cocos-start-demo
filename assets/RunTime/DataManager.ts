@@ -1,5 +1,6 @@
 import Singleton from "../Base/Singleton"
 import { ITile } from "../Levels"
+import { DoorManager } from "../Scripts/Door/DoorManager";
 import { EnemyManager } from "../Scripts/Enemy/EnemyManager";
 import { PlayerManager } from "../Scripts/Player/PlayerManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
@@ -43,5 +44,10 @@ export default class DataManager extends Singleton {
   /**
    * 地图瓦片信息
    */
-  tileMapInfo: Array<Array<TileManager>>
+  tileMapInfo: Array<Array<TileManager>>;
+
+  /**
+   * 门信息
+   */
+  doorInfo: DoorManager;
 }
