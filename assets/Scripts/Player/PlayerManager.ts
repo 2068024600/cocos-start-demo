@@ -185,7 +185,7 @@ export class PlayerManager extends Entity {
 
     willBlock(playerActionType: PLAYERACTION_TYPE) {
         const {targetX: x, targetY: y, direction} = this;
-        const { tileMapInfo, doorInfo } = DataManager.instance;
+        const { tileMapInfo, doorInfo, enemyInfo } = DataManager.instance;
 
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
             /**
@@ -206,8 +206,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if (doorInfo.x === this.x && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if (doorInfo.x === this.x
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if (enemyX === this.x
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
@@ -229,8 +241,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX) && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === this.x || enemyX === weaponNextX)
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                    return true;
+                }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -251,8 +275,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if (doorInfo.x === this.x && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if (doorInfo.x === this.x
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if (enemyX === this.x
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
@@ -274,8 +310,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                 if ((doorInfo.x === this.x || doorInfo.x === weaponNextX) && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === this.x || enemyX === weaponNextX)
+                    && (enemyY === playerNextY || enemyY === weaponNextY)
+                    && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -302,8 +350,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && (doorInfo.y === this.y || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === this.y || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && (enemyY === this.y || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -324,8 +384,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && doorInfo.y === this.y && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && doorInfo.y === this.y
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && enemyY === this.y
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
@@ -347,8 +419,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && (doorInfo.y === this.y || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === this.y || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && (enemyY === this.y || enemyY === weaponNextY)
+                        && enemyState === ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -369,8 +453,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && doorInfo.y === this.y && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && doorInfo.y === this.y
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                    && enemyY === this.y
+                    && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
@@ -396,8 +492,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if (doorInfo.x === this.x && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if (doorInfo.x === this.x
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if (enemyX === this.x
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
@@ -419,8 +527,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX) && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === this.x || enemyX === weaponNextX)
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -441,8 +561,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if (doorInfo.x === this.x && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if (doorInfo.x === this.x
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if (enemyX === this.x
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
@@ -464,8 +596,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX) && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === this.x || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === playerNextY || doorInfo.y === weaponNextY)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === this.x || enemyX === weaponNextX)
+                        && (enemyY === playerNextY || enemyY === weaponNextY)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -492,8 +636,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                 if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && doorInfo.y === weaponNextY && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && doorInfo.y === weaponNextY
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && enemyY === weaponNextY
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -514,8 +670,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && doorInfo.y === this.y && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && doorInfo.y === this.y
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && enemyY === this.y
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
@@ -537,8 +705,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && (doorInfo.y === weaponNextY || doorInfo.y === this.y) && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && (doorInfo.y === weaponNextY || doorInfo.y === this.y)
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && (enemyY === weaponNextY || enemyY === this.y)
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
@@ -559,8 +739,20 @@ export class PlayerManager extends Entity {
                 /**
                  * 判断是否是门
                  */
-                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX) && doorInfo.y === this.y && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                if ((doorInfo.x === playerNextX || doorInfo.x === weaponNextX)
+                    && doorInfo.y === this.y
+                    && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
                     return true;
+                }
+                /**
+                 * 判断是否有敌人
+                 */
+                for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                    if ((enemyX === playerNextX || enemyX === weaponNextX)
+                        && enemyY === this.y
+                        && enemyState !== ENTITY_STATE_ENUM.DEATH) {
+                        return true;
+                    }
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
@@ -602,9 +794,30 @@ export class PlayerManager extends Entity {
                 weaponNextY = y - 1;
             }
 
-            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable &&
-                 tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable &&
-                  tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
+            /**
+             * 判断门
+             */
+            if (((doorInfo.x === x && doorInfo.y === weaponNextY)
+                || (doorInfo.x === weaponNextX && doorInfo.y === weaponNextY)
+                || (doorInfo.x === weaponNextX && doorInfo.y === y))
+                && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                return true;
+            }
+            /**
+             * 判断敌人
+             */
+            for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                if (((enemyX === x && enemyY === weaponNextY)
+                || (enemyX === weaponNextX && enemyY === weaponNextY)
+                || (enemyX === weaponNextX && enemyY === y))
+                && (enemyState !== ENTITY_STATE_ENUM.DEATH)) {
+                    return true;
+                }
+            }
+
+            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable
+                && tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable
+                && tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
 
             } else {
                 return true;
@@ -641,10 +854,30 @@ export class PlayerManager extends Entity {
                 weaponNextX = x - 1;
                 weaponNextY = y + 1;
             }
+            /**
+             * 判断门
+             */
+            if (((doorInfo.x === x && doorInfo.y === weaponNextY)
+                || (doorInfo.x === weaponNextX && doorInfo.y === weaponNextY)
+                || (doorInfo.x === weaponNextX && doorInfo.y === y))
+                && doorInfo.state === ENTITY_STATE_ENUM.IDLE) {
+                return true;
+            }
+            /**
+             * 判断敌人
+             */
+            for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
+                if (((enemyX === x && enemyY === weaponNextY)
+                || (enemyX === weaponNextX && enemyY === weaponNextY)
+                || (enemyX === weaponNextX && enemyY === y))
+                && (enemyState !== ENTITY_STATE_ENUM.DEATH)) {
+                    return true;
+                }
+            }
 
-            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable &&
-                 tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable &&
-                  tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
+            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable
+                && tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable
+                && tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
 
             } else {
                 return true;
