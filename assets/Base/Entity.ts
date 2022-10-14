@@ -1,4 +1,3 @@
-
 import { _decorator, Component, Node } from 'cc';
 import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, PARAMS_NAME_ENUM } from '../Enums';
 import { IEntity } from '../Levels';

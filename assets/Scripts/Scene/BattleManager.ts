@@ -6,10 +6,11 @@ import DataManager from '../../RunTime/DataManager'
 import levels, { IEntity, ILevel } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PlayerManager } from '../Player/PlayerManager';
-import { EnemyManager } from '../Enemy/EnemyManager';
+import { WoodenSkeletonManager } from '../WoodenSkeleton/WoodenSkeletonManager';
 import EventResource from '../../RunTime/EventManager';
 import { EVENT_TYPE } from '../../Enums';
 import { DoorManager } from '../Door/DoorManager';
+import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -24,6 +25,7 @@ export class BatterManage extends Component {
      * 进入下一关
      */
     nextLevel() {
+        this.destroyNode();
         DataManager.instance.level++;
         this.initlevel(DataManager.instance.level);
     }
@@ -44,7 +46,7 @@ export class BatterManage extends Component {
         this.initlevel(DataManager.instance.level);
     }
 
-    initlevel(levelNum: number) {
+    async initlevel(levelNum: number) {
         const level = levels[`level${levelNum}`]
         if (level) {
 
@@ -53,13 +55,13 @@ export class BatterManage extends Component {
             DataManager.instance.mapColCount = level.mapInfo[0].length
 
             // 生成地图
-            this.generateTileMap();
+            await this.generateTileMap();
             // 生成敌人
-            this.generateEnemy();
+            await this.generateEnemy();
             // 生成门
-            this.generateDoor();
+            await this.generateDoor();
             // 生成人物
-            this.generatePlayer(level.playerInfo);
+            await this.generatePlayer(level.playerInfo);
         }
     }
 
@@ -117,11 +119,16 @@ export class BatterManage extends Component {
      * 生成敌人
      */
     async generateEnemy() {
-        const enemy = createUINode();
-        enemy.setParent(this.stage);
-        const enemyManager = enemy.addComponent(EnemyManager);
-        await enemyManager.init();
-        DataManager.instance.enemyInfo.push(enemyManager);
+        const woodenSkeleton = createUINode();
+        woodenSkeleton.setParent(this.stage);
+        const woodenSkeletonManager = woodenSkeleton.addComponent(WoodenSkeletonManager);
+        await woodenSkeletonManager.init();
+        DataManager.instance.enemyInfo.push(woodenSkeletonManager);
+        const ironSkeleton = createUINode();
+        ironSkeleton.setParent(this.stage);
+        const ironSkeletonManager = ironSkeleton.addComponent(IronSkeletonManager);
+        await ironSkeletonManager.init();
+        DataManager.instance.enemyInfo.push(ironSkeletonManager);
     }
 
     /**

@@ -54,6 +54,7 @@ export class PlayerManager extends Entity {
             this.isMoving = false;
             DataManager.instance.playerInfo = this;
             EventResource.instance.exec(EVENT_TYPE.ENEMY_TURN);
+            EventResource.instance.exec(EVENT_TYPE.ENEMY_ATK);
         }
         // 设置人物的位置
         super.updatePosition()
