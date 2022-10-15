@@ -16,6 +16,12 @@ export abstract class Enemy extends Entity {
         EventResource.instance.add(EVENT_TYPE.ENEMY_DEATH, this.death, this);
     }
 
+    onDestroy() {
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_BOTH, this.onchangeDirection);
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE_END, this.onchangeDirection);
+        EventResource.instance.remove(EVENT_TYPE.ENEMY_DEATH, this.death);
+    }
+
     update() {
         super.updatePosition();
     }

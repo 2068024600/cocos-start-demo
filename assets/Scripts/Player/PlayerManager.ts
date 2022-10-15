@@ -34,6 +34,11 @@ export class PlayerManager extends Entity {
         EventResource.instance.add(EVENT_TYPE.PLAYER_DEATH, this.death, this);
     }
 
+    onDestroy() {
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE, this.inputHandle);
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_DEATH, this.death);
+    }
+
     update() {
         if (this.x < this.targetX) {
             this.x += this.speed
@@ -94,16 +99,12 @@ export class PlayerManager extends Entity {
     move(playerActionType: PLAYERACTION_TYPE) {
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
             this.targetY++;
-            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.DOWN_MOVE) {
             this.targetY--;
-            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.LEFT_MOVE) {
             this.targetX--;
-            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE) {
             this.targetX++;
-            this.isMoving = true;
         } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.CLOCKWISE;
             this.direction = (this.direction + 1) % 4;
@@ -111,13 +112,14 @@ export class PlayerManager extends Entity {
             this.state = ENTITY_STATE_ENUM.ANTICLOCKWISE;
             this.direction = (this.direction + 4 - 1) % 4;
         }
+        this.isMoving = true;
     }
 
     /**
      * 人物死亡逻辑
      */
-    death() {
-        this.state = ENTITY_STATE_ENUM.DEATH;
+    death(state: ENTITY_STATE_ENUM) {
+        this.state = state;
     }
 
     /**
@@ -184,7 +186,7 @@ export class PlayerManager extends Entity {
 
     willBlock(playerActionType: PLAYERACTION_TYPE) {
         const {targetX: x, targetY: y, direction} = this;
-        const { tileMapInfo, doorInfo, enemyInfo } = DataManager.instance;
+        const { tileMapInfo, doorInfo, enemyInfo, burstInfo } = DataManager.instance;
 
         if (playerActionType === PLAYERACTION_TYPE.UP_MOVE) {
             /**
@@ -211,6 +213,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -222,7 +232,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -246,6 +256,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -257,7 +275,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -280,6 +298,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -291,7 +317,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -315,6 +341,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -326,7 +360,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -355,6 +389,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -366,7 +408,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -389,6 +431,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -400,7 +450,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -424,6 +474,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -435,7 +493,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -458,6 +516,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -469,7 +535,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -497,6 +563,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -508,7 +582,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -532,6 +606,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -543,7 +625,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -566,6 +648,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -577,7 +667,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -591,6 +681,14 @@ export class PlayerManager extends Entity {
                 const weaponNextY = y - 1;
                 if (Math.abs(playerNextY) > tileMapInfo[0].length) {
                     return true;
+                }
+                /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === this.x && burstY === playerNextY && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
                 }
                 /**
                  * 判断是否是门
@@ -612,7 +710,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -641,6 +739,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -652,7 +758,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -675,6 +781,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -686,7 +800,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -710,6 +824,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -721,7 +843,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
@@ -744,6 +866,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 /**
+                 * 判断是否是地裂
+                 */
+                for (const {x: burstX, y: burstY, state: burstState} of burstInfo) {
+                    if (burstX === playerNextX && burstY === this.y && burstState !== ENTITY_STATE_ENUM.DEATH) {
+                        return false;
+                    }
+                }
+                /**
                  * 判断是否有敌人
                  */
                 for (const {x: enemyX, y: enemyY, state: enemyState} of enemyInfo) {
@@ -755,7 +885,7 @@ export class PlayerManager extends Entity {
                 }
                 const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
                 const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
-                if (playerNextTile?.moveable && weaponNextTile?.turnable) {
+                if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;

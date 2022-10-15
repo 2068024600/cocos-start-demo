@@ -14,6 +14,7 @@ import { BlockTurnRightSubMachine } from './BlockTurnRightSubMachine';
 import { DeathSubMachine } from './DeathSubMachine';
 import { ATKSubMachine } from './ATKSubMachine';
 import { PlayerManager } from './PlayerManager';
+import { AirDeathSubMachine } from './AirDeathSubMachine';
 
 @ccclass('PlayerStateMachine')
 export class PlayerStateMachine extends StateMachine {
@@ -39,6 +40,7 @@ export class PlayerStateMachine extends StateMachine {
     this.params.set(PARAMS_NAME_ENUM.BLOCK_TURNLEFT, getParamTrigget(false));
     this.params.set(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT, getParamTrigget(false));
     this.params.set(PARAMS_NAME_ENUM.DEATH, getParamTrigget(false));
+    this.params.set(PARAMS_NAME_ENUM.AIRDEATH, getParamTrigget(false));
     this.params.set(PARAMS_NAME_ENUM.ATTACK, getParamTrigget(false));
   }
 
@@ -53,6 +55,7 @@ export class PlayerStateMachine extends StateMachine {
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCK_TURNLEFT, new BlockTurnLeftSubMachine(this));
     this.stateMachines.set(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT, new BlockTurnRightSubMachine(this));
     this.stateMachines.set(PARAMS_NAME_ENUM.DEATH, new DeathSubMachine(this));
+    this.stateMachines.set(PARAMS_NAME_ENUM.AIRDEATH, new AirDeathSubMachine(this));
     this.stateMachines.set(PARAMS_NAME_ENUM.ATTACK, new ATKSubMachine(this));
   }
 
@@ -66,6 +69,8 @@ export class PlayerStateMachine extends StateMachine {
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_RIGHT):
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_TURNLEFT):
       case this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT):
+      case this.stateMachines.get(PARAMS_NAME_ENUM.DEATH):
+      case this.stateMachines.get(PARAMS_NAME_ENUM.AIRDEATH):
       case this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK):
       case this.stateMachines.get(PARAMS_NAME_ENUM.IDLE):
         if (this.params.get(PARAMS_NAME_ENUM.CLOCKWISE).value) {
@@ -88,6 +93,8 @@ export class PlayerStateMachine extends StateMachine {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.BLOCK_TURNRIGHT);
         } else if (this.params.get(PARAMS_NAME_ENUM.DEATH).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.DEATH);
+        } else if (this.params.get(PARAMS_NAME_ENUM.AIRDEATH).value) {
+          this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.AIRDEATH);
         } else if (this.params.get(PARAMS_NAME_ENUM.ATTACK).value) {
           this.currentState = this.stateMachines.get(PARAMS_NAME_ENUM.ATTACK);
         }

@@ -1,4 +1,5 @@
 import { Enemy } from "../Base/Enemy";
+import { Entity } from "../Base/Entity";
 import Singleton from "../Base/Singleton"
 import { ITile } from "../Levels"
 import { DoorManager } from "../Scripts/Door/DoorManager";
@@ -50,4 +51,6 @@ export default class DataManager extends Singleton {
    * 门信息
    */
   doorInfo: DoorManager;
+
+  burstInfo: Array<Entity> = [];
 }

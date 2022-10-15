@@ -17,6 +17,10 @@ export class DoorManager extends Entity {
         EventResource.instance.add(EVENT_TYPE.DOOR_OPEN, this.onOpen, this);
     }
 
+    onDestroy() {
+        EventResource.instance.remove(EVENT_TYPE.DOOR_OPEN, this.onOpen);
+    }
+
     async init() {
         this.fsm = this.addComponent(DoorStateMachine);
         await this.fsm.init();

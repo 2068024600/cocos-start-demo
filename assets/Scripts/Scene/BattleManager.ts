@@ -11,6 +11,7 @@ import EventResource from '../../RunTime/EventManager';
 import { EVENT_TYPE } from '../../Enums';
 import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
+import { BurstManager } from '../Burst/BurstManager';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -60,6 +61,8 @@ export class BatterManage extends Component {
             await this.generateEnemy();
             // 生成门
             await this.generateDoor();
+            // 生成地裂
+            await this.generateBurst();
             // 生成人物
             await this.generatePlayer(level.playerInfo);
         }
@@ -134,11 +137,22 @@ export class BatterManage extends Component {
     /**
      * 生成门
      */
-     async generateDoor() {
+    async generateDoor() {
         const door = createUINode();
         door.setParent(this.stage);
         const doorManager = door.addComponent(DoorManager);
         await doorManager.init();
         DataManager.instance.doorInfo = doorManager;
+    }
+
+    /**
+     * 生成地裂
+     */
+    async generateBurst() {
+        const burst = createUINode();
+        burst.setParent(this.stage);
+        const burstManager = burst.addComponent(BurstManager);
+        await burstManager.init();
+        DataManager.instance.burstInfo.push(burstManager);
     }
 }

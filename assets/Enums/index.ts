@@ -157,6 +157,7 @@ export enum PARAMS_NAME_ENUM {
    * 死亡
    */
   DEATH = 'DEATH',
+  AIRDEATH = 'AIRDEATH'
 }
 
 export enum PARAMS_NAME_DIRECTIO_ENUM {
@@ -231,6 +232,7 @@ export enum ENTITY_STATE_ENUM {
    * 死亡
    */
   DEATH = 'DEATH',
+  AIRDEATH = 'AIRDEATH'
 }
 
 export enum ENTITY_TYPE_ENUM {
@@ -245,5 +247,9 @@ export enum ENTITY_TYPE_ENUM {
   /**
    * 门
    */
-  DOOR = 'DOOR'
+  DOOR = 'DOOR',
+  /**
+   * 落石
+   */
+  BURST = 'BURST'
 }
