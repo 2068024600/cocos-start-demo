@@ -54,6 +54,10 @@ export enum EVENT_TYPE {
    */
   PLAYER_MOVE = 'PLAYER_MOVE',
   /**
+   * 人物移动结束
+   */
+  PLAYER_MOVE_END = 'PLAYER_MOVE_END',
+  /**
    * 人物生成
    */
   PLAYER_BOTH = 'PLAYER_BOTH',
@@ -61,14 +65,6 @@ export enum EVENT_TYPE {
    * 人物死亡
    */
   PLAYER_DEATH = 'PLAYER_DEATH',
-  /**
-   * 怪物转向
-   */
-  ENEMY_TURN = 'ENEMY_TURN',
-  /**
-   * 怪物攻击
-   */
-  ENEMY_ATK = 'ENEMY_ATK',
   /**
    * 怪物死亡
    */

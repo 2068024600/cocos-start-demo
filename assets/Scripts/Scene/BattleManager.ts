@@ -112,7 +112,7 @@ export class BatterManage extends Component {
         await playerManager.init(playerInfo);
         DataManager.instance.playerInfo = playerManager;
         // 怪物自动转向到人物方向
-        EventResource.instance.exec(EVENT_TYPE.ENEMY_TURN);
+        EventResource.instance.exec(EVENT_TYPE.PLAYER_BOTH);
     }
 
     /**

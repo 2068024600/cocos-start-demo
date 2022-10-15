@@ -35,7 +35,7 @@ export class WoodenSkeletonManager extends Enemy {
 
     onLoad() {
         super.onLoad();
-        EventResource.instance.add(EVENT_TYPE.ENEMY_ATK, this.attack, this);
+        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.attack, this);
     }
 
     update() {

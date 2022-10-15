@@ -11,7 +11,8 @@ export abstract class Enemy extends Entity {
     abstract init(): void;
 
     onLoad() {
-        EventResource.instance.add(EVENT_TYPE.ENEMY_TURN, this.onchangeDirection, this);
+        EventResource.instance.add(EVENT_TYPE.PLAYER_BOTH, this.onchangeDirection, this);
+        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.onchangeDirection, this);
         EventResource.instance.add(EVENT_TYPE.ENEMY_DEATH, this.death, this);
     }
 
