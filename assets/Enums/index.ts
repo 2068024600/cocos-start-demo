@@ -157,7 +157,28 @@ export enum PARAMS_NAME_ENUM {
    * 死亡
    */
   DEATH = 'DEATH',
-  AIRDEATH = 'AIRDEATH'
+  AIRDEATH = 'AIRDEATH',
+  /**
+   * 一刺
+   */
+  SPIKES_ONE = 'SPLKES_ONE',
+  /**
+   * 二刺
+   */
+  SPIKES_TWO = 'SPLKES_TWO',
+  /**
+   * 三刺
+   */
+  SPIKES_THREE = 'SPLKES_THREE',
+  /**
+   * 四刺
+   */
+  SPIKES_FOUR = 'SPIKES_FOUR',
+  /**
+   * 刺数量
+   */
+  SPIKES_NUMBER = 'SPIKES_NUMBER'
+
 }
 
 export enum PARAMS_NAME_DIRECTIO_ENUM {
@@ -166,22 +187,44 @@ export enum PARAMS_NAME_DIRECTIO_ENUM {
   BOTTOM = 'BOTTOM',
   LEFT = 'LEFT',
 }
+
+/**
+ * 方向枚举
+ */
+ export enum DIRECTION_ENUM {
+  TOP = 0,
+  RIGHT = 1,
+  BOTTOM = 2,
+  LEFT = 3,
+}
+
+/**
+ * 刺数量枚举
+ */
+export enum PARAMS_SPIKES_NUMBER_ENUM {
+  ZERO = 'ZERO',
+  ONE = 'ONE',
+  TWO = 'TWO',
+  THREE = 'THREE',
+  FOUR = 'FOUR',
+  FIVE = 'FIVE'
+}
+
+export enum SPIKES_NUMBER_ENUM {
+  ZERO = 0,
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+  FOUR = 4,
+  FIVE = 5
+}
+
 /**
  * 有限状态机参数类型枚举
  */
  export enum FSM_PARAM_TYPE_ENUM {
   NUMBER = 'NUMBER',
   TRIGGER = 'TRIGGER',
-}
-
-/**
- * 方向枚举
- */
-export enum DIRECTION_ENUM {
-  TOP = 0,
-  RIGHT = 1,
-  BOTTOM = 2,
-  LEFT = 3,
 }
 
 /**
@@ -252,4 +295,25 @@ export enum ENTITY_TYPE_ENUM {
    * 落石
    */
   BURST = 'BURST'
+}
+
+export enum SPIKES_TYPE_ENUM {
+
+  /**
+   * 一刺
+   */
+  SPIKES_ONE = 'SPLKES_ONE',
+  /**
+   * 二刺
+   */
+  SPIKES_TWO = 'SPLKES_TWO',
+  /**
+   * 三刺
+   */
+  SPIKES_THREE = 'SPLKES_THREE',
+  /**
+   * 四刺
+   */
+  SPIKES_FOUR = 'SPIKES_FOUR'
+
 }

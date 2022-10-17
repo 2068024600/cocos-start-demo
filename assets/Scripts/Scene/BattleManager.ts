@@ -12,6 +12,7 @@ import { EVENT_TYPE } from '../../Enums';
 import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
+import { SpikesManager } from '../Spikes/SpikesManager';
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -63,6 +64,8 @@ export class BatterManage extends Component {
             await this.generateDoor();
             // 生成地裂
             await this.generateBurst();
+            // 生成地刺
+            await this.generateSpikes();
             // 生成人物
             await this.generatePlayer(level.playerInfo);
         }
@@ -154,5 +157,16 @@ export class BatterManage extends Component {
         const burstManager = burst.addComponent(BurstManager);
         await burstManager.init();
         DataManager.instance.burstInfo.push(burstManager);
+    }
+
+    /**
+     * 生成地刺
+     */
+    async generateSpikes() {
+        const spikes = createUINode();
+        spikes.setParent(this.stage);
+        const spikesManager = spikes.addComponent(SpikesManager);
+        await spikesManager.init();
+        DataManager.instance.spikesInfo.push(spikesManager);
     }
 }

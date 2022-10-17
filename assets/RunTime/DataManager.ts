@@ -4,6 +4,7 @@ import Singleton from "../Base/Singleton"
 import { ITile } from "../Levels"
 import { DoorManager } from "../Scripts/Door/DoorManager";
 import { PlayerManager } from "../Scripts/Player/PlayerManager";
+import { SpikesManager } from "../Scripts/Spikes/SpikesManager";
 import { TileManager } from "../Scripts/Tile/TileManager";
 
 export default class DataManager extends Singleton {
@@ -53,4 +54,6 @@ export default class DataManager extends Singleton {
   doorInfo: DoorManager;
 
   burstInfo: Array<Entity> = [];
+
+  spikesInfo: Array<SpikesManager> = [];
 }

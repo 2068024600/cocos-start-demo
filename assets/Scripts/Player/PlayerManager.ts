@@ -68,7 +68,9 @@ export class PlayerManager extends Entity {
         /**
          * 若人物已经死亡或者正在做攻击动作
          */
-        if (this.state === ENTITY_STATE_ENUM.DEATH || this.state === ENTITY_STATE_ENUM.ATTACK) {
+        if (this.state === ENTITY_STATE_ENUM.DEATH
+            || this.state === ENTITY_STATE_ENUM.AIRDEATH
+            || this.state === ENTITY_STATE_ENUM.ATTACK) {
             return;
         }
         const id = this.attack(playerActionType);
