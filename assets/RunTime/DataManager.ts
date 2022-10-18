@@ -13,6 +13,19 @@ export default class DataManager extends Singleton {
     return super.getInstance<DataManager>();
   }
 
+  reset() {
+    this.mapInfo = [[]]
+    this.mapRowCount = 0;
+    this.mapColCount = 0;
+
+    this.playerInfo = null;
+    this.enemyInfo = [];
+    this.tileMapInfo = [[]];
+    this.doorInfo = null;
+    this.burstInfo = [];
+    this.spikesInfo = [];
+  }
+
   /**
    * 关卡数
    */

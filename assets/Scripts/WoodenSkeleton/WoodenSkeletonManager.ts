@@ -5,6 +5,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM } from '../../Enums';
 import { WoodenSkeletonStateMachine } from './WoodenSkeletonStateMachine';
 import { Enemy } from '../../Base/Enemy';
+import { IEntity } from '../../Levels';
 const { ccclass, property } = _decorator;
 
 // 人物大小
@@ -14,7 +15,7 @@ const ENEMY_HEIGHT = TILE_HEIGHT * 4;
 @ccclass('WoodenSkeletonManager')
 export class WoodenSkeletonManager extends Enemy {
 
-    async init() {
+    async init(enemy: IEntity) {
         this.fsm = this.addComponent(WoodenSkeletonStateMachine);
         await this.fsm.init();
 
@@ -24,13 +25,7 @@ export class WoodenSkeletonManager extends Enemy {
         const transform = this.addComponent(UITransform);
         transform.setContentSize(ENEMY_WIDTH, ENEMY_HEIGHT);
 
-        super.initParams({
-            x: 6,
-            y: -6,
-            direction: DIRECTION_ENUM.TOP,
-            state: ENTITY_STATE_ENUM.IDLE,
-            type: ENTITY_TYPE_ENUM.PALYER
-        });
+        super.initParams(enemy);
     }
 
     onLoad() {

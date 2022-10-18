@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, Sprite, UITransform } from 'cc';
 import { Entity } from '../../Base/Entity';
 import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_TYPE } from '../../Enums';
+import { IEntity } from '../../Levels';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_WIDTH, TILE_HEIGHT } from '../Tile/TileManager';
@@ -21,7 +22,7 @@ export class DoorManager extends Entity {
         EventResource.instance.remove(EVENT_TYPE.DOOR_OPEN, this.onOpen);
     }
 
-    async init() {
+    async init(door: IEntity) {
         this.fsm = this.addComponent(DoorStateMachine);
         await this.fsm.init();
 
@@ -30,13 +31,7 @@ export class DoorManager extends Entity {
         const transform = this.addComponent(UITransform);
         transform.setContentSize(DOOR_WIDTH, DOOR_HEIGHT);
 
-        super.initParams({
-            x: 7,
-            y: -8,
-            direction: DIRECTION_ENUM.TOP,
-            state: ENTITY_STATE_ENUM.IDLE,
-            type: ENTITY_TYPE_ENUM.DOOR
-        });
+        super.initParams(door);
 
         super.updatePosition();
     }

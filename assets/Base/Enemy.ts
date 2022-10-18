@@ -3,12 +3,13 @@ import DataManager from '../RunTime/DataManager';
 import EventResource from '../RunTime/EventManager';
 import { EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM } from '../Enums';
 import { Entity } from '../Base/Entity';
+import { IEntity } from '../Levels';
 const { ccclass, property } = _decorator;
 
 @ccclass('Enemy')
 export abstract class Enemy extends Entity {
 
-    abstract init(): void;
+    abstract init(enemy: IEntity): void;
 
     onLoad() {
         EventResource.instance.add(EVENT_TYPE.PLAYER_BOTH, this.onchangeDirection, this);

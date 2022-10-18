@@ -3,12 +3,12 @@ import { TileMapManage } from '../Tile/TileMapManager';
 const { ccclass, property } = _decorator;
 import { createUINode, loadSpriteFrameResource } from '../../Utils';
 import DataManager from '../../RunTime/DataManager'
-import levels, { IEntity, ILevel } from '../../Levels';
+import levels, { IEntity, ILevel, ISpike } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PlayerManager } from '../Player/PlayerManager';
 import { WoodenSkeletonManager } from '../WoodenSkeleton/WoodenSkeletonManager';
 import EventResource from '../../RunTime/EventManager';
-import { EVENT_TYPE, SPIKES_TYPE_ENUM } from '../../Enums';
+import { ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, EVENT_TYPE } from '../../Enums';
 import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
@@ -17,26 +17,14 @@ import { SpikesManager } from '../Spikes/SpikesManager';
 @ccclass('BatterManage')
 export class BatterManage extends Component {
 
-    level: ILevel
+    level: ILevel;
     // 舞台结点
-    stage: Node
+    stage: Node;
     // 瓦片地图结点
-    tileMap: Node
+    tileMap: Node;
 
-    /**
-     * 进入下一关
-     */
-    nextLevel() {
-        this.destroyNode();
-        DataManager.instance.level++;
-        this.initlevel(DataManager.instance.level);
-    }
-
-    /**
-     * 销毁结点
-     */
-    destroyNode() {
-        this.stage.destroyAllChildren()
+    onLoad() {
+        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.checkNextLevel, this);
     }
 
     start() {
@@ -48,26 +36,51 @@ export class BatterManage extends Component {
         this.initlevel(DataManager.instance.level);
     }
 
+    onDestroy() {
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE_END, this.checkNextLevel);
+    }
+
+
+
+    /**
+     * 进入下一关
+     */
+    nextLevel() {
+        this.destroyNode();
+        DataManager.instance.reset();
+        DataManager.instance.level++;
+        this.initlevel(DataManager.instance.level);
+    }
+
+    /**
+     * 销毁结点
+     */
+    destroyNode() {
+        this.stage.destroyAllChildren();
+    }
+
     async initlevel(levelNum: number) {
         const level = levels[`level${levelNum}`]
         if (level) {
 
-            DataManager.instance.mapInfo = level.mapInfo,
-            DataManager.instance.mapRowCount = level.mapInfo.length
-            DataManager.instance.mapColCount = level.mapInfo[0].length
+            const { mapInfo, player, enemies, door, bursts, spikes } = level;
+
+            DataManager.instance.mapInfo = mapInfo;
+            DataManager.instance.mapRowCount = mapInfo.length;
+            DataManager.instance.mapColCount = mapInfo[0].length;
 
             // 生成地图
             await this.generateTileMap();
             // 生成敌人
-            await this.generateEnemy();
+            await this.generateEnemy(enemies);
             // 生成门
-            await this.generateDoor();
+            await this.generateDoor(door);
             // 生成地裂
-            await this.generateBurst();
+            await this.generateBurst(bursts);
             // 生成地刺
-            await this.generateSpikes();
+            await this.generateSpikes(spikes);
             // 生成人物
-            await this.generatePlayer(level.playerInfo);
+            await this.generatePlayer(player);
         }
     }
 
@@ -124,55 +137,71 @@ export class BatterManage extends Component {
     /**
      * 生成敌人
      */
-    async generateEnemy() {
-        const woodenSkeleton = createUINode();
-        woodenSkeleton.setParent(this.stage);
-        const woodenSkeletonManager = woodenSkeleton.addComponent(WoodenSkeletonManager);
-        await woodenSkeletonManager.init();
-        DataManager.instance.enemyInfo.push(woodenSkeletonManager);
-        const ironSkeleton = createUINode();
-        ironSkeleton.setParent(this.stage);
-        const ironSkeletonManager = ironSkeleton.addComponent(IronSkeletonManager);
-        await ironSkeletonManager.init();
-        DataManager.instance.enemyInfo.push(ironSkeletonManager);
+    async generateEnemy(enemies: Array<IEntity>) {
+
+        for (const enemy of enemies) {
+            if (enemy.type === ENTITY_TYPE_ENUM.WOODEN_SKELETON_ENEMY) {
+                const woodenSkeleton = createUINode();
+                woodenSkeleton.setParent(this.stage);
+                const woodenSkeletonManager = woodenSkeleton.addComponent(WoodenSkeletonManager);
+                await woodenSkeletonManager.init(enemy);
+                DataManager.instance.enemyInfo.push(woodenSkeletonManager);
+            } else if (enemy.type === ENTITY_TYPE_ENUM.IRON_SKELETON_ENEMY) {
+                const ironSkeleton = createUINode();
+                ironSkeleton.setParent(this.stage);
+                const ironSkeletonManager = ironSkeleton.addComponent(IronSkeletonManager);
+                await ironSkeletonManager.init(enemy);
+                DataManager.instance.enemyInfo.push(ironSkeletonManager);
+            }
+        }
     }
 
     /**
      * 生成门
      */
-    async generateDoor() {
-        const door = createUINode();
-        door.setParent(this.stage);
-        const doorManager = door.addComponent(DoorManager);
-        await doorManager.init();
+    async generateDoor(door: IEntity) {
+        const doorNode = createUINode();
+        doorNode.setParent(this.stage);
+        const doorManager = doorNode.addComponent(DoorManager);
+        await doorManager.init(door);
         DataManager.instance.doorInfo = doorManager;
     }
 
     /**
      * 生成地裂
      */
-    async generateBurst() {
-        const burst = createUINode();
-        burst.setParent(this.stage);
-        const burstManager = burst.addComponent(BurstManager);
-        await burstManager.init();
-        DataManager.instance.burstInfo.push(burstManager);
+    async generateBurst(bursts: Array<IEntity>) {
+        for (const burst of bursts) {
+            const burstNode = createUINode();
+            burstNode.setParent(this.stage);
+            const burstManager = burstNode.addComponent(BurstManager);
+            await burstManager.init(burst);
+            DataManager.instance.burstInfo.push(burstManager);
+        }
     }
 
     /**
      * 生成地刺
      */
-    async generateSpikes() {
-        const spikes = createUINode();
-        spikes.setParent(this.stage);
-        const spikesManager = spikes.addComponent(SpikesManager);
-        await spikesManager.init({
-            x: 2,
-            y: -5,
-            type: SPIKES_TYPE_ENUM.SPIKES_FOUR,
-            number: 0,
-            totalNumber: 5
-        });
-        DataManager.instance.spikesInfo.push(spikesManager);
+    async generateSpikes(spikes: Array<ISpike>) {
+        for (const spike of spikes) {
+            const spikeNode = createUINode();
+            spikeNode.setParent(this.stage);
+            const spikesManager = spikeNode.addComponent(SpikesManager);
+            await spikesManager.init(spike);
+            DataManager.instance.spikesInfo.push(spikesManager);
+        }
+    }
+
+    /**
+     * 检查是否能进入下一关
+     */
+    checkNextLevel() {
+        const {x: playerX, y: playerY} = DataManager.instance.playerInfo;
+        const {x: doorX, y: doorY, state} = DataManager.instance.doorInfo;
+        if (playerX === doorX && playerY === doorY && state === ENTITY_STATE_ENUM.DEATH) {
+            // 进入下一关
+            this.nextLevel();
+        }
     }
 }

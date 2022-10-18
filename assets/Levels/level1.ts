@@ -1,5 +1,5 @@
-import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
-import { IEntity, ILevel } from './index';
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, SPIKES_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
+import { IEntity, ILevel, ISpike } from './index';
 
 /**
  * 地图瓦片信息
@@ -427,18 +427,71 @@ const mapInfo = [
   ],
 ];
 
-const playerInfo: IEntity = {
+/**
+ * 角色
+ */
+const player: IEntity = {
   x: 2,
   y: -8,
   direction: DIRECTION_ENUM.TOP,
   state: ENTITY_STATE_ENUM.IDLE,
-  type: ENTITY_TYPE_ENUM.PALYER,
+  type: ENTITY_TYPE_ENUM.PLAYER,
 }
 
+/**
+ * 敌人
+ */
+const enemies: Array<IEntity> = [
+  {
+    x: 7,
+    y: -6,
+    direction: DIRECTION_ENUM.TOP,
+    state: ENTITY_STATE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.WOODEN_SKELETON_ENEMY,
+  },
+];
+
+/**
+ * 门
+ */
+const door: IEntity = {
+  x: 7,
+  y: -8,
+  direction: DIRECTION_ENUM.TOP,
+  state: ENTITY_STATE_ENUM.IDLE,
+  type: ENTITY_TYPE_ENUM.DOOR
+}
+
+/**
+ * 地裂
+ */
+const bursts: Array<IEntity> = [
+  {
+    x: 2,
+    y: -6,
+    direction: DIRECTION_ENUM.TOP,
+    state: ENTITY_STATE_ENUM.IDLE,
+    type: ENTITY_TYPE_ENUM.BURST
+  }
+]
+
+const spikes: Array<ISpike> = [
+  {
+    x: 2,
+    y: -5,
+    type: SPIKES_TYPE_ENUM.SPIKES_FOUR,
+    number: 0,
+    totalNumber: 5
+  }
+]
 
 const level: ILevel = {
   mapInfo,
-  playerInfo
+  player,
+  enemies,
+  door,
+  bursts,
+  spikes
 }
 
 export default level;

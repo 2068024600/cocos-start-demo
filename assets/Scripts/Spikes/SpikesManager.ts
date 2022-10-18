@@ -2,7 +2,7 @@
 import { _decorator, Component, Node, SpriteFrame, UITransform, Sprite } from 'cc';
 import { getParamNumber, getParamTrigget, StateMachine } from '../../Base/StateMachine';
 import { ENTITY_STATE_ENUM, EVENT_TYPE, PARAMS_NAME_ENUM, SPIKES_TYPE_ENUM } from '../../Enums';
-import { ISpikes } from '../../Levels';
+import { ISpike } from '../../Levels';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
@@ -43,9 +43,13 @@ export class SpikesManager extends Component {
         this.node.setPosition(this.x * TILE_WIDTH, this.y * TILE_HEIGHT);
     }
 
-    async init(spikes:ISpikes) {
+    onDestroy() {
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE_END, this.onChangeNumber);
+    }
 
-        const {x, y, type, number, totalNumber} = spikes;
+    async init(spike:ISpike) {
+
+        const {x, y, type, number, totalNumber} = spike;
 
         this.fsm = this.addComponent(SpikesStateMachines);
         await this.fsm.init();

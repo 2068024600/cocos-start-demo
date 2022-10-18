@@ -15,7 +15,7 @@ export interface IEntity {
   type: ENTITY_TYPE_ENUM;
 }
 
-export interface ISpikes {
+export interface ISpike {
   x: number;
   y: number;
   /**
@@ -37,7 +37,11 @@ export interface ISpikes {
  */
 export interface ILevel {
   mapInfo: Array<Array<ITile>>,
-  playerInfo: IEntity
+  player: IEntity,
+  enemies: Array<IEntity>,
+  door: IEntity,
+  bursts: Array<IEntity>,
+  spikes: Array<ISpike>
 }
 
 const levels: Record<string, ILevel> = {

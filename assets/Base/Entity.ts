@@ -52,7 +52,7 @@ export abstract class Entity extends Component {
     initParams(params : IEntity) {
         this.x = params.x
         this.y = params.y
-        this._direction = params.direction
+        this.direction = params.direction
         this.state = params.state
         this.type = params.type
     }

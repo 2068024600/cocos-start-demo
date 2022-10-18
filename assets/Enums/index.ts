@@ -282,11 +282,15 @@ export enum ENTITY_TYPE_ENUM {
   /**
    * 玩家
    */
-  PALYER = 'PALYER',
+  PLAYER = 'PLAYER',
   /**
-   * 敌人
+   * 木骷髅
    */
-  ENEMY = 'ENEMY',
+  WOODEN_SKELETON_ENEMY = 'WOODEN_SKELETON_ENEMY',
+  /**
+   * 铁骷髅
+   */
+  IRON_SKELETON_ENEMY = 'IRON_SKELETON_ENEMY',
   /**
    * 门
    */
