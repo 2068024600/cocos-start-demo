@@ -8,7 +8,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PlayerManager } from '../Player/PlayerManager';
 import { WoodenSkeletonManager } from '../WoodenSkeleton/WoodenSkeletonManager';
 import EventResource from '../../RunTime/EventManager';
-import { EVENT_TYPE } from '../../Enums';
+import { EVENT_TYPE, SPIKES_TYPE_ENUM } from '../../Enums';
 import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
@@ -166,7 +166,13 @@ export class BatterManage extends Component {
         const spikes = createUINode();
         spikes.setParent(this.stage);
         const spikesManager = spikes.addComponent(SpikesManager);
-        await spikesManager.init();
+        await spikesManager.init({
+            x: 2,
+            y: -5,
+            type: SPIKES_TYPE_ENUM.SPIKES_FOUR,
+            number: 0,
+            totalNumber: 5
+        });
         DataManager.instance.spikesInfo.push(spikesManager);
     }
 }

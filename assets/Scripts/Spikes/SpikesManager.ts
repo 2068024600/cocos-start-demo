@@ -2,6 +2,7 @@
 import { _decorator, Component, Node, SpriteFrame, UITransform, Sprite } from 'cc';
 import { getParamNumber, getParamTrigget, StateMachine } from '../../Base/StateMachine';
 import { ENTITY_STATE_ENUM, EVENT_TYPE, PARAMS_NAME_ENUM, SPIKES_TYPE_ENUM } from '../../Enums';
+import { ISpikes } from '../../Levels';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
@@ -42,7 +43,10 @@ export class SpikesManager extends Component {
         this.node.setPosition(this.x * TILE_WIDTH, this.y * TILE_HEIGHT);
     }
 
-    async init() {
+    async init(spikes:ISpikes) {
+
+        const {x, y, type, number, totalNumber} = spikes;
+
         this.fsm = this.addComponent(SpikesStateMachines);
         await this.fsm.init();
 
@@ -51,11 +55,11 @@ export class SpikesManager extends Component {
         const transform = this.addComponent(UITransform);
         transform.setContentSize(SPIKES_WIDTH, SPIKES_HEIGHT);
 
-        this.x = 2;
-        this.y = -5;
-        this.type = SPIKES_TYPE_ENUM.SPIKES_ONE;
-        this.number = 0;
-        this.totalNumber = 2;
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.number = number;
+        this.totalNumber = totalNumber;
 
     }
 
@@ -76,13 +80,13 @@ export class SpikesManager extends Component {
 
     public set type(type: SPIKES_TYPE_ENUM) {
         this._type = type;
-        this.fsm.setParam(PARAMS_NAME_ENUM.SPIKES_ONE, getParamTrigget(true));
+        this.fsm.setParam(type, getParamTrigget(true));
     }
 
     public set number(number: number) {
         this._number = number;
         this.fsm.setParam(PARAMS_NAME_ENUM.SPIKES_NUMBER, getParamNumber(number));
-        this.fsm.setParam(PARAMS_NAME_ENUM.SPIKES_ONE, getParamTrigget(true));
+        this.fsm.setParam(this.type, getParamTrigget(true));
     }
 
     public get number() {
