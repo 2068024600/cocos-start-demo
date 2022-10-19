@@ -1,8 +1,8 @@
 import { _decorator, Component, Node, Layers } from 'cc';
 import { TileMapManage } from '../Tile/TileMapManager';
 const { ccclass, property } = _decorator;
-import { createUINode, loadSpriteFrameResource } from '../../Utils';
-import DataManager from '../../RunTime/DataManager'
+import { createUINode, loadSpriteFrameResource, request } from '../../Utils';
+import DataManager, { IData } from '../../RunTime/DataManager'
 import levels, { IEntity, ILevel, ISpike } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
 import { PlayerManager } from '../Player/PlayerManager';
@@ -14,6 +14,8 @@ import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
 import { SpikesManager } from '../Spikes/SpikesManager';
 
+const IP = "http://127.0.0.1:8080";
+
 @ccclass('BatterManage')
 export class BatterManage extends Component {
 
@@ -24,7 +26,9 @@ export class BatterManage extends Component {
     tileMap: Node;
 
     onLoad() {
-        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.checkNextLevel, this);
+        // 这里的99代表这个函数最后执行
+        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.checkNextLevel, this, 99);
+        EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.save, this, 99);
     }
 
     start() {
@@ -32,15 +36,19 @@ export class BatterManage extends Component {
         this.generateStage();
         // // 加载资源
         // this.loadResource();
-        // 加载关卡数据
-        this.initlevel(DataManager.instance.level);
+        if (this.login()) {
+            // 加载云端存档
+            this.load();
+        } else {
+            // 加载本地关卡数据
+            this.initlevel(DataManager.instance.level);
+        }
     }
 
     onDestroy() {
         EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE_END, this.checkNextLevel);
+        EventResource.instance.remove(EVENT_TYPE.PLAYER_MOVE_END, this.save);
     }
-
-
 
     /**
      * 进入下一关
@@ -68,6 +76,7 @@ export class BatterManage extends Component {
             DataManager.instance.mapInfo = mapInfo;
             DataManager.instance.mapRowCount = mapInfo.length;
             DataManager.instance.mapColCount = mapInfo[0].length;
+            DataManager.instance.level = levelNum;
 
             // 生成地图
             await this.generateTileMap();
@@ -81,6 +90,8 @@ export class BatterManage extends Component {
             await this.generateSpikes(spikes);
             // 生成人物
             await this.generatePlayer(player);
+
+            await this.save();
         }
     }
 
@@ -203,5 +214,84 @@ export class BatterManage extends Component {
             // 进入下一关
             this.nextLevel();
         }
+    }
+
+    /**
+     * 登录
+     */
+    login(): boolean {
+        const id = localStorage.getItem("crampedRoomPlayerId") || "";
+        request("GET", `${IP}/web/rest/levelRest/login?id=${id}`).then(res => {
+            const id = res.id;
+            if (id) {
+                localStorage.setItem("crampedRoomPlayerId", id);
+            }
+        }).catch(err => console.error(err));
+
+        return localStorage.getItem("crampedRoomPlayerId") ? true : false;
+    }
+
+    /**
+     * 保存
+     */
+    async save() {
+        const id = localStorage.getItem("crampedRoomPlayerId");
+        if (id) {
+            request("POST", `${IP}/web/rest/levelRest/save`, {
+                id: id,
+                ...DataManager.instance.getData()
+            });
+        }
+    }
+
+    /**
+     * 加载
+     */
+    async load() {
+        const id = localStorage.getItem("crampedRoomPlayerId");
+        if (id) {
+            request("GET", `${IP}/web/rest/levelRest/getLevel?id=${id}`).then(res => {
+                this.loadLevel(res);
+            }).catch(err => console.error(err));
+        }
+    }
+
+    /**
+     * 加载存档
+     * @param loadData
+     * @returns
+     */
+    async loadLevel(loadData: IData) {
+        // 若云端无存档，则加载本地
+        if (!loadData) {
+            this.initlevel(DataManager.instance.level);
+            return;
+        } else {
+            const {level, player, enemies, door, bursts, spikes } = loadData
+            const levelInfo = levels[`level${level}`]
+            if (levelInfo) {
+
+                DataManager.instance.mapInfo = levelInfo.mapInfo;
+                DataManager.instance.mapRowCount = levelInfo.mapInfo.length;
+                DataManager.instance.mapColCount = levelInfo.mapInfo[0].length;
+                DataManager.instance.level = level;
+
+                // 生成地图
+                await this.generateTileMap();
+                // 生成敌人
+                await this.generateEnemy(enemies);
+                // 生成门
+                await this.generateDoor(door);
+                // 生成地裂
+                await this.generateBurst(bursts);
+                // 生成地刺
+                await this.generateSpikes(spikes);
+                // 生成人物
+                await this.generatePlayer(player);
+
+                await this.save();
+            }
+        }
+
     }
 }

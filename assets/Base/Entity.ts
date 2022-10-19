@@ -1,5 +1,5 @@
 import { _decorator, Component, Node } from 'cc';
-import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, PARAMS_NAME_ENUM } from '../Enums';
+import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, PARAMS_NAME_DIRECTIO_ENUM, PARAMS_NAME_ENUM } from '../Enums';
 import { IEntity } from '../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Scripts/Tile/TileManager';
 import { generateNumString } from '../Utils';
@@ -18,7 +18,7 @@ export abstract class Entity extends Component {
     fsm: StateMachine
 
     // 定义人物状态和方向等属性
-    private _direction: DIRECTION_ENUM = DIRECTION_ENUM.TOP;
+    private _direction: PARAMS_NAME_DIRECTIO_ENUM = PARAMS_NAME_DIRECTIO_ENUM.TOP;
     private _state: ENTITY_STATE_ENUM = ENTITY_STATE_ENUM.IDLE;
 
     private _type: ENTITY_TYPE_ENUM
@@ -27,9 +27,9 @@ export abstract class Entity extends Component {
         return this._direction;
     }
 
-    public set direction(direction: DIRECTION_ENUM) {
+    public set direction(direction: PARAMS_NAME_DIRECTIO_ENUM) {
         this._direction = direction;
-        this.fsm.setParam(PARAMS_NAME_ENUM.DIRECTION, getParamNumber(this._direction));
+        this.fsm.setParam(PARAMS_NAME_ENUM.DIRECTION, getParamNumber(DIRECTION_ENUM[this._direction]));
     }
 
     public get state() {

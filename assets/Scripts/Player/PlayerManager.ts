@@ -2,7 +2,7 @@ import { _decorator, UITransform, Sprite } from 'cc';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
-import { PLAYERACTION_TYPE, EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM } from '../../Enums'
+import { PLAYERACTION_TYPE, EVENT_TYPE, PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM, DIRECTION_ENUM } from '../../Enums'
 import { PlayerStateMachine } from './PlayerStateMachine';
 import { Entity } from '../../Base/Entity';
 import { IEntity } from '../../Levels';
@@ -109,10 +109,12 @@ export class PlayerManager extends Entity {
             this.targetX++;
         } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.CLOCKWISE;
-            this.direction = (this.direction + 1) % 4;
+            const direction = (DIRECTION_ENUM[this.direction] + 1) % 4;
+            this.direction = PARAMS_NAME_DIRECTIO_ENUM[DIRECTION_ENUM[direction]];
         } else if (playerActionType === PLAYERACTION_TYPE.ANTICLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.ANTICLOCKWISE;
-            this.direction = (this.direction + 4 - 1) % 4;
+            const direction = (DIRECTION_ENUM[this.direction] + 4 - 1) % 4;
+            this.direction = PARAMS_NAME_DIRECTIO_ENUM[DIRECTION_ENUM[direction]];
         }
         this.isMoving = true;
     }
@@ -136,28 +138,28 @@ export class PlayerManager extends Entity {
         for (const enemy of enemyList) {
             const {x: enemyX, y: enemyY, id: enemyId} = enemy;
             if (
-                this.direction === DIRECTION_ENUM.TOP &&
+                this.direction === PARAMS_NAME_DIRECTIO_ENUM.TOP &&
                 playerActionType === PLAYERACTION_TYPE.UP_MOVE &&
                 enemyY === this.targetY + 2 &&
                 enemyX === this.x
               ) {
                 return enemyId
               } else if (
-                this.direction === DIRECTION_ENUM.BOTTOM &&
+                this.direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM &&
                 playerActionType === PLAYERACTION_TYPE.DOWN_MOVE &&
                 enemyY === this.targetY - 2 &&
                 enemyX === this.x
               ) {
                 return enemyId
               } else if (
-                this.direction === DIRECTION_ENUM.LEFT &&
+                this.direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT &&
                 playerActionType === PLAYERACTION_TYPE.LEFT_MOVE &&
                 enemyX === this.targetX - 2 &&
                 enemyY === this.y
               ) {
                 return enemyId
               } else if (
-                this.direction === DIRECTION_ENUM.RIGHT &&
+                this.direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT &&
                 playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE &&
                 enemyX === this.targetX + 2 &&
                 enemyY === this.y
@@ -194,7 +196,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向上移动
              */
-            if (direction === DIRECTION_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -239,7 +241,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -282,7 +284,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -324,7 +326,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -372,7 +374,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向右移动
              */
-            if (direction === DIRECTION_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -415,7 +417,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -457,7 +459,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -500,7 +502,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -547,7 +549,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向下移动
              */
-            if (direction === DIRECTION_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -589,7 +591,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -632,7 +634,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -674,7 +676,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -722,7 +724,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向左移动
              */
-             if (direction === DIRECTION_ENUM.TOP) {
+             if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -765,7 +767,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -807,7 +809,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -850,7 +852,7 @@ export class PlayerManager extends Entity {
                 } else {
                     return true;
                 }
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -899,25 +901,25 @@ export class PlayerManager extends Entity {
              */
             let weaponNextX : number;
             let weaponNextY : number;
-            if (direction === DIRECTION_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
                 weaponNextX = x - 1;
                 weaponNextY = y + 1;
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y + 1;
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y - 1;
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝上
                  */
@@ -960,25 +962,25 @@ export class PlayerManager extends Entity {
              */
             let weaponNextX : number;
             let weaponNextY : number;
-            if (direction === DIRECTION_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y + 1;
-            } else if (direction === DIRECTION_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y - 1;
-            } else if (direction === DIRECTION_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
                 weaponNextX = x - 1;
                 weaponNextY = y - 1;
-            } else if (direction === DIRECTION_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
                 /**
                  * 人物方向朝上
                  */

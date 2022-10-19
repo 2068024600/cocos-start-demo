@@ -55,3 +55,30 @@ export const spriteFrameSort = (spriteFrames: Array<SpriteFrame>) => spriteFrame
  * @returns
  */
 export const generateNumString = (len: number) => Array.from({ length: len }).reduce<string>((total: string) => total + Math.floor(Math.random() * 10), '')
+
+
+/**
+ * 请求
+ * @param method
+ * @param url
+ * @param body
+ * @returns
+ */
+export const request = (method: string, url: string, body?: any) => {
+  method = method.toUpperCase();
+    if (method === 'GET') {
+        body = undefined;
+    } else {
+        body = body && JSON.stringify(body);
+    }
+    return fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: body
+    }).then((res) => {
+      return res.json();
+    });
+}

@@ -1,4 +1,4 @@
-import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, SPIKES_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
+import { PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, SPIKES_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
 import { IEntity, ILevel, ISpike } from './index';
 
 /**
@@ -433,7 +433,7 @@ const mapInfo = [
 const player: IEntity = {
   x: 2,
   y: -8,
-  direction: DIRECTION_ENUM.TOP,
+  direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
   state: ENTITY_STATE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.PLAYER,
 }
@@ -445,7 +445,7 @@ const enemies: Array<IEntity> = [
   {
     x: 7,
     y: -6,
-    direction: DIRECTION_ENUM.TOP,
+    direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
     state: ENTITY_STATE_ENUM.IDLE,
     type: ENTITY_TYPE_ENUM.WOODEN_SKELETON_ENEMY,
   },
@@ -457,7 +457,7 @@ const enemies: Array<IEntity> = [
 const door: IEntity = {
   x: 7,
   y: -8,
-  direction: DIRECTION_ENUM.TOP,
+  direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
   state: ENTITY_STATE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.DOOR
 }
@@ -469,7 +469,7 @@ const bursts: Array<IEntity> = [
   {
     x: 2,
     y: -6,
-    direction: DIRECTION_ENUM.TOP,
+    direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
     state: ENTITY_STATE_ENUM.IDLE,
     type: ENTITY_TYPE_ENUM.BURST
   }

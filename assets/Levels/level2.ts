@@ -1,4 +1,4 @@
-import { DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
+import { PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums';
 import { IEntity, ILevel, ISpike } from './index';
 
 /**
@@ -191,7 +191,7 @@ import { IEntity, ILevel, ISpike } from './index';
 const player: IEntity = {
   x: 2,
   y: 0,
-  direction: DIRECTION_ENUM.BOTTOM,
+  direction: PARAMS_NAME_DIRECTIO_ENUM.BOTTOM,
   state: ENTITY_STATE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.PLAYER,
 };
@@ -200,14 +200,14 @@ const enemies: Array<IEntity> = [
   {
     x: 3,
     y: -2,
-    direction: DIRECTION_ENUM.TOP,
+    direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
     state: ENTITY_STATE_ENUM.IDLE,
     type: ENTITY_TYPE_ENUM.WOODEN_SKELETON_ENEMY,
   },
   {
     x: 4,
     y: -3,
-    direction: DIRECTION_ENUM.TOP,
+    direction: PARAMS_NAME_DIRECTIO_ENUM.TOP,
     state: ENTITY_STATE_ENUM.IDLE,
     type: ENTITY_TYPE_ENUM.IRON_SKELETON_ENEMY,
   },
@@ -220,7 +220,7 @@ const bursts: Array<IEntity> = [];
 const door: IEntity = {
   x: 5,
   y: -3,
-  direction: DIRECTION_ENUM.LEFT,
+  direction: PARAMS_NAME_DIRECTIO_ENUM.LEFT,
   state: ENTITY_STATE_ENUM.IDLE,
   type: ENTITY_TYPE_ENUM.DOOR,
 };

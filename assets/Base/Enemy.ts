@@ -1,7 +1,7 @@
 import { _decorator } from 'cc';
 import DataManager from '../RunTime/DataManager';
 import EventResource from '../RunTime/EventManager';
-import { EVENT_TYPE, DIRECTION_ENUM, ENTITY_STATE_ENUM } from '../Enums';
+import { EVENT_TYPE, PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM } from '../Enums';
 import { Entity } from '../Base/Entity';
 import { IEntity } from '../Levels';
 const { ccclass, property } = _decorator;
@@ -42,16 +42,16 @@ export abstract class Enemy extends Entity {
         }
         if (playerX >= this.x && playerY >= this.y) {
             // 第一象限
-            x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.TOP
+            x > y ? this.direction = PARAMS_NAME_DIRECTIO_ENUM.RIGHT : this.direction = PARAMS_NAME_DIRECTIO_ENUM.TOP
         } else if (playerX <= this.x && playerY >= this.y) {
             // 第二象限
-            x > y ? this.direction = DIRECTION_ENUM.LEFT : this.direction = DIRECTION_ENUM.TOP
+            x > y ? this.direction = PARAMS_NAME_DIRECTIO_ENUM.LEFT : this.direction = PARAMS_NAME_DIRECTIO_ENUM.TOP
         } else if (playerX <= this.x && playerY <= this.y) {
             // 第三象限
-            x > y ? this.direction = DIRECTION_ENUM.LEFT : this.direction = DIRECTION_ENUM.BOTTOM
+            x > y ? this.direction = PARAMS_NAME_DIRECTIO_ENUM.LEFT : this.direction = PARAMS_NAME_DIRECTIO_ENUM.BOTTOM
         } else if (playerX >= this.x && playerY <= this.y) {
             // 第四象限
-            x > y ? this.direction = DIRECTION_ENUM.RIGHT : this.direction = DIRECTION_ENUM.BOTTOM
+            x > y ? this.direction = PARAMS_NAME_DIRECTIO_ENUM.RIGHT : this.direction = PARAMS_NAME_DIRECTIO_ENUM.BOTTOM
         }
         this.state = ENTITY_STATE_ENUM.IDLE;
     }
