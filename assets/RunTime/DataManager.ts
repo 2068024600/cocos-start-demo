@@ -98,7 +98,7 @@ export default class DataManager extends Singleton {
   /**
    * 关卡数
    */
-  level = 1;
+  level = 4;
 
   /**
    * 地图数据

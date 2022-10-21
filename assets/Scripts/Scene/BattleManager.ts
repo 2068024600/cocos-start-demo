@@ -1,7 +1,7 @@
 import { _decorator, Component, Node, Layers } from 'cc';
 import { TileMapManage } from '../Tile/TileMapManager';
 const { ccclass, property } = _decorator;
-import { createUINode, loadSpriteFrameResource, request } from '../../Utils';
+import { createUINode, request } from '../../Utils';
 import DataManager, { IData } from '../../RunTime/DataManager'
 import levels, { IEntity, ILevel, ISpike } from '../../Levels';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
@@ -14,7 +14,8 @@ import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
 import { SpikesManager } from '../Spikes/SpikesManager';
 
-const IP = "http://127.0.0.1:8080";
+const IP = "http://101.34.173.203:8080";
+// const IP = "http://127.0.0.1:8080";
 
 @ccclass('BatterManage')
 export class BatterManage extends Component {
@@ -31,18 +32,19 @@ export class BatterManage extends Component {
         EventResource.instance.add(EVENT_TYPE.PLAYER_MOVE_END, this.save, this, 99);
     }
 
-    start() {
+    async start() {
         // 搭建舞台
         this.generateStage();
         // // 加载资源
         // this.loadResource();
-        if (this.login()) {
-            // 加载云端存档
-            this.load();
-        } else {
-            // 加载本地关卡数据
-            this.initlevel(DataManager.instance.level);
-        }
+        // if (await this.login()) {
+        //     // 加载云端存档
+        //     this.load();
+        // } else {
+        //     // 加载本地关卡数据
+        //     this.initlevel(DataManager.instance.level);
+        // }
+        this.initlevel(DataManager.instance.level);
     }
 
     onDestroy() {
@@ -68,6 +70,7 @@ export class BatterManage extends Component {
     }
 
     async initlevel(levelNum: number) {
+
         const level = levels[`level${levelNum}`]
         if (level) {
 
@@ -219,16 +222,18 @@ export class BatterManage extends Component {
     /**
      * 登录
      */
-    login(): boolean {
+    async login() {
+        let isLogin = false;
         const id = localStorage.getItem("crampedRoomPlayerId") || "";
-        request("GET", `${IP}/web/rest/levelRest/login?id=${id}`).then(res => {
+        await request("GET", `${IP}/web/rest/levelRest/login?id=${id}`).then(res => {
             const id = res.id;
             if (id) {
                 localStorage.setItem("crampedRoomPlayerId", id);
+                isLogin = true;
             }
         }).catch(err => console.error(err));
 
-        return localStorage.getItem("crampedRoomPlayerId") ? true : false;
+        return isLogin;
     }
 
     /**
@@ -251,7 +256,11 @@ export class BatterManage extends Component {
         const id = localStorage.getItem("crampedRoomPlayerId");
         if (id) {
             request("GET", `${IP}/web/rest/levelRest/getLevel?id=${id}`).then(res => {
-                this.loadLevel(res);
+                if (res.res) {
+                    this.loadLevel(res.levelInfo);
+                } else {
+                    this.initlevel(DataManager.instance.level);
+                }
             }).catch(err => console.error(err));
         }
     }
@@ -267,6 +276,7 @@ export class BatterManage extends Component {
             this.initlevel(DataManager.instance.level);
             return;
         } else {
+
             const {level, player, enemies, door, bursts, spikes } = loadData
             const levelInfo = levels[`level${level}`]
             if (levelInfo) {

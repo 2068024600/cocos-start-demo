@@ -1,4 +1,5 @@
 import Singleton from "../Base/Singleton";
+import { EVENT_TYPE } from "../Enums";
 
 interface IFunc {
   func: Function,
@@ -36,7 +37,7 @@ export default class EventResource extends Singleton {
   remove(eventName: string, func: Function) {
     if (this.eventMap.has(eventName)) {
       const index = this.eventMap.get(eventName).findIndex(value => value.func == func);
-      index > -1 && this.eventMap.get(eventName).splice(index);
+      index > -1 && this.eventMap.get(eventName).splice(index, 1);
     }
   }
 

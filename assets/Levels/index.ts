@@ -1,6 +1,11 @@
 import level1 from "./level1";
 import level2 from "./level2";
-import { PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, SPIKES_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums'
+import level3 from "./level3";
+import level4 from "./level4";
+import level5 from "./level5";
+import level6 from "./level6";
+import level7 from "./level7";
+import { PARAMS_NAME_DIRECTION_ENUM, ENTITY_STATE_ENUM, ENTITY_TYPE_ENUM, SPIKES_TYPE_ENUM, TILE_TYPE_ENUM } from '../Enums'
 
 export interface ITile {
   src: number | null,
@@ -10,7 +15,7 @@ export interface ITile {
 export interface IEntity {
   x: number;
   y: number;
-  direction: PARAMS_NAME_DIRECTIO_ENUM;
+  direction: PARAMS_NAME_DIRECTION_ENUM;
   state: ENTITY_STATE_ENUM;
   type: ENTITY_TYPE_ENUM;
 }
@@ -46,7 +51,12 @@ export interface ILevel {
 
 const levels: Record<string, ILevel> = {
   level1,
-  level2
+  level2,
+  level3,
+  level4,
+  level5,
+  level6,
+  level7
 }
 
 export default levels;

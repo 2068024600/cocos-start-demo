@@ -161,15 +161,15 @@ export enum PARAMS_NAME_ENUM {
   /**
    * 一刺
    */
-  SPIKES_ONE = 'SPLKES_ONE',
+  SPIKES_ONE = 'SPIKES_ONE',
   /**
    * 二刺
    */
-  SPIKES_TWO = 'SPLKES_TWO',
+  SPIKES_TWO = 'SPIKES_TWO',
   /**
    * 三刺
    */
-  SPIKES_THREE = 'SPLKES_THREE',
+  SPIKES_THREE = 'SPIKES_THREE',
   /**
    * 四刺
    */
@@ -181,7 +181,7 @@ export enum PARAMS_NAME_ENUM {
 
 }
 
-export enum PARAMS_NAME_DIRECTIO_ENUM {
+export enum PARAMS_NAME_DIRECTION_ENUM {
   TOP = 'TOP',
   RIGHT = 'RIGHT',
   BOTTOM = 'BOTTOM',
@@ -306,15 +306,15 @@ export enum SPIKES_TYPE_ENUM {
   /**
    * 一刺
    */
-  SPIKES_ONE = 'SPLKES_ONE',
+  SPIKES_ONE = 'SPIKES_ONE',
   /**
    * 二刺
    */
-  SPIKES_TWO = 'SPLKES_TWO',
+  SPIKES_TWO = 'SPIKES_TWO',
   /**
    * 三刺
    */
-  SPIKES_THREE = 'SPLKES_THREE',
+  SPIKES_THREE = 'SPIKES_THREE',
   /**
    * 四刺
    */

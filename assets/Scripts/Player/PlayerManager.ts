@@ -2,7 +2,7 @@ import { _decorator, UITransform, Sprite } from 'cc';
 import DataManager from '../../RunTime/DataManager';
 import EventResource from '../../RunTime/EventManager';
 import { TILE_HEIGHT, TILE_WIDTH } from '../Tile/TileManager';
-import { PLAYERACTION_TYPE, EVENT_TYPE, PARAMS_NAME_DIRECTIO_ENUM, ENTITY_STATE_ENUM, DIRECTION_ENUM } from '../../Enums'
+import { PLAYERACTION_TYPE, EVENT_TYPE, PARAMS_NAME_DIRECTION_ENUM, ENTITY_STATE_ENUM, DIRECTION_ENUM } from '../../Enums'
 import { PlayerStateMachine } from './PlayerStateMachine';
 import { Entity } from '../../Base/Entity';
 import { IEntity } from '../../Levels';
@@ -110,11 +110,11 @@ export class PlayerManager extends Entity {
         } else if (playerActionType === PLAYERACTION_TYPE.CLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.CLOCKWISE;
             const direction = (DIRECTION_ENUM[this.direction] + 1) % 4;
-            this.direction = PARAMS_NAME_DIRECTIO_ENUM[DIRECTION_ENUM[direction]];
+            this.direction = PARAMS_NAME_DIRECTION_ENUM[DIRECTION_ENUM[direction]];
         } else if (playerActionType === PLAYERACTION_TYPE.ANTICLOCKWISE) {
             this.state = ENTITY_STATE_ENUM.ANTICLOCKWISE;
             const direction = (DIRECTION_ENUM[this.direction] + 4 - 1) % 4;
-            this.direction = PARAMS_NAME_DIRECTIO_ENUM[DIRECTION_ENUM[direction]];
+            this.direction = PARAMS_NAME_DIRECTION_ENUM[DIRECTION_ENUM[direction]];
         }
         this.isMoving = true;
     }
@@ -138,28 +138,28 @@ export class PlayerManager extends Entity {
         for (const enemy of enemyList) {
             const {x: enemyX, y: enemyY, id: enemyId} = enemy;
             if (
-                this.direction === PARAMS_NAME_DIRECTIO_ENUM.TOP &&
+                this.direction === PARAMS_NAME_DIRECTION_ENUM.TOP &&
                 playerActionType === PLAYERACTION_TYPE.UP_MOVE &&
                 enemyY === this.targetY + 2 &&
                 enemyX === this.x
               ) {
                 return enemyId
               } else if (
-                this.direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM &&
+                this.direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM &&
                 playerActionType === PLAYERACTION_TYPE.DOWN_MOVE &&
                 enemyY === this.targetY - 2 &&
                 enemyX === this.x
               ) {
                 return enemyId
               } else if (
-                this.direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT &&
+                this.direction === PARAMS_NAME_DIRECTION_ENUM.LEFT &&
                 playerActionType === PLAYERACTION_TYPE.LEFT_MOVE &&
                 enemyX === this.targetX - 2 &&
                 enemyY === this.y
               ) {
                 return enemyId
               } else if (
-                this.direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT &&
+                this.direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT &&
                 playerActionType === PLAYERACTION_TYPE.RIGHT_MOVE &&
                 enemyX === this.targetX + 2 &&
                 enemyY === this.y
@@ -196,7 +196,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向上移动
              */
-            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -234,14 +234,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[x]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -277,14 +277,14 @@ export class PlayerManager extends Entity {
                     return true;
                 }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -319,14 +319,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[x]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -362,8 +362,8 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
@@ -374,7 +374,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向右移动
              */
-            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -410,14 +410,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -452,14 +452,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(y)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -495,14 +495,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -537,8 +537,8 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(y)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
@@ -549,13 +549,13 @@ export class PlayerManager extends Entity {
             /**
              * 人物向下移动
              */
-            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
                 const playerNextY = y - 1;
                 const weaponNextY = y;
-                if (Math.abs(playerNextY) > tileMapInfo[0].length) {
+                if (Math.abs(playerNextY) > tileMapInfo[x].length) {
                     return true;
                 }
                 /**
@@ -584,21 +584,21 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[x]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
                 const playerNextY = y - 1;
                 const weaponNextX = x + 1;
                 const weaponNextY = y - 1;
-                if (Math.abs(playerNextY) > tileMapInfo[0].length) {
+                if (Math.abs(playerNextY) > tileMapInfo[x].length) {
                     return true;
                 }
                 /**
@@ -627,20 +627,20 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
                 const playerNextY = y - 1;
                 const weaponNextY = y - 2;
-                if (Math.abs(playerNextY) > tileMapInfo[0].length) {
+                if (Math.abs(playerNextY) > tileMapInfo[x].length) {
                     return true;
                 }
                 /**
@@ -669,21 +669,21 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[x][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[x]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
                 const playerNextY = y - 1;
                 const weaponNextX = x - 1;
                 const weaponNextY = y - 1;
-                if (Math.abs(playerNextY) > tileMapInfo[0].length) {
+                if (Math.abs(playerNextY) > tileMapInfo[x].length) {
                     return true;
                 }
                 /**
@@ -712,8 +712,8 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[x][Math.abs(playerNextY)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[x]?.[Math.abs(playerNextY)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
@@ -724,7 +724,7 @@ export class PlayerManager extends Entity {
             /**
              * 人物向左移动
              */
-             if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+             if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
@@ -760,14 +760,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
@@ -802,14 +802,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(y)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
@@ -845,14 +845,14 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(weaponNextY)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
                     return true;
                 }
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝左
                  */
@@ -887,8 +887,8 @@ export class PlayerManager extends Entity {
                         return true;
                     }
                 }
-                const playerNextTile = tileMapInfo[playerNextX][Math.abs(y)];
-                const weaponNextTile = tileMapInfo[weaponNextX][Math.abs(y)];
+                const playerNextTile = tileMapInfo[playerNextX]?.[Math.abs(y)];
+                const weaponNextTile = tileMapInfo[weaponNextX]?.[Math.abs(y)];
                 if (playerNextTile?.moveable && (weaponNextTile?.turnable || !weaponNextTile)) {
 
                 } else {
@@ -901,25 +901,25 @@ export class PlayerManager extends Entity {
              */
             let weaponNextX : number;
             let weaponNextY : number;
-            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
                 weaponNextX = x - 1;
                 weaponNextY = y + 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y + 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y - 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝上
                  */
@@ -948,9 +948,9 @@ export class PlayerManager extends Entity {
                 }
             }
 
-            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable
-                && tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable
-                && tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
+            if ((!tileMapInfo[x]?.[Math.abs(weaponNextY)] || tileMapInfo[x]?.[Math.abs(weaponNextY)].turnable)
+                && (!tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)] || tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)].turnable)
+                && (!tileMapInfo[weaponNextX]?.[Math.abs(y)] || tileMapInfo[weaponNextX]?.[Math.abs(y)].turnable)) {
 
             } else {
                 return true;
@@ -962,25 +962,25 @@ export class PlayerManager extends Entity {
              */
             let weaponNextX : number;
             let weaponNextY : number;
-            if (direction === PARAMS_NAME_DIRECTIO_ENUM.TOP) {
+            if (direction === PARAMS_NAME_DIRECTION_ENUM.TOP) {
                 /**
                  * 人物方向朝上
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y + 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.RIGHT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.RIGHT) {
                 /**
                  * 人物方向朝右
                  */
                 weaponNextX = x + 1;
                 weaponNextY = y - 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.BOTTOM) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.BOTTOM) {
                 /**
                  * 人物方向朝下
                  */
                 weaponNextX = x - 1;
                 weaponNextY = y - 1;
-            } else if (direction === PARAMS_NAME_DIRECTIO_ENUM.LEFT) {
+            } else if (direction === PARAMS_NAME_DIRECTION_ENUM.LEFT) {
                 /**
                  * 人物方向朝上
                  */
@@ -1008,9 +1008,9 @@ export class PlayerManager extends Entity {
                 }
             }
 
-            if (tileMapInfo[x][Math.abs(weaponNextY)].turnable
-                && tileMapInfo[weaponNextX][Math.abs(weaponNextY)].turnable
-                && tileMapInfo[weaponNextX][Math.abs(y)].turnable) {
+            if ((!tileMapInfo[x]?.[Math.abs(weaponNextY)] || tileMapInfo[x]?.[Math.abs(weaponNextY)].turnable)
+                && (!tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)] || tileMapInfo[weaponNextX]?.[Math.abs(weaponNextY)].turnable)
+                && (!tileMapInfo[weaponNextX]?.[Math.abs(y)] || tileMapInfo[weaponNextX]?.[Math.abs(y)].turnable)) {
 
             } else {
                 return true;
