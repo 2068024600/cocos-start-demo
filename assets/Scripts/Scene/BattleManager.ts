@@ -37,14 +37,14 @@ export class BatterManage extends Component {
         this.generateStage();
         // // 加载资源
         // this.loadResource();
-        // if (await this.login()) {
-        //     // 加载云端存档
-        //     this.load();
-        // } else {
-        //     // 加载本地关卡数据
-        //     this.initlevel(DataManager.instance.level);
-        // }
-        this.initlevel(DataManager.instance.level);
+        if (await this.login()) {
+            // 加载云端存档
+            this.load();
+        } else {
+            // 加载本地关卡数据
+            this.initlevel(DataManager.instance.level);
+        }
+        // this.initlevel(DataManager.instance.level);
     }
 
     onDestroy() {
