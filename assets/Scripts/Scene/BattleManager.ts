@@ -13,6 +13,7 @@ import { DoorManager } from '../Door/DoorManager';
 import { IronSkeletonManager } from '../IronSkeleton/IronSkeletonManager';
 import { BurstManager } from '../Burst/BurstManager';
 import { SpikesManager } from '../Spikes/SpikesManager';
+import FaderManager from '../../RunTime/FaderManager';
 
 const IP = "http://101.34.173.203:8080";
 // const IP = "http://127.0.0.1:8080";
@@ -25,6 +26,8 @@ export class BatterManage extends Component {
     stage: Node;
     // 瓦片地图结点
     tileMap: Node;
+    // 是否已初始化
+    isInit:boolean = false
 
     onLoad() {
         // 这里的99代表这个函数最后执行
@@ -37,14 +40,14 @@ export class BatterManage extends Component {
         this.generateStage();
         // // 加载资源
         // this.loadResource();
-        if (await this.login()) {
-            // 加载云端存档
-            this.load();
-        } else {
-            // 加载本地关卡数据
-            this.initlevel(DataManager.instance.level);
-        }
-        // this.initlevel(DataManager.instance.level);
+        // if (await this.login()) {
+        //     // 加载云端存档
+        //     this.load();
+        // } else {
+        //     // 加载本地关卡数据
+        //     this.initlevel(DataManager.instance.level);
+        // }
+        this.initlevel(DataManager.instance.level);
     }
 
     onDestroy() {
@@ -73,6 +76,11 @@ export class BatterManage extends Component {
 
         const level = levels[`level${levelNum}`]
         if (level) {
+            if (!this.isInit) {
+                await FaderManager.Instance.mask()
+            } else {
+                await FaderManager.Instance.fadeIn()
+            }
 
             const { mapInfo, player, enemies, door, bursts, spikes } = level;
 
@@ -94,7 +102,9 @@ export class BatterManage extends Component {
             // 生成人物
             await this.generatePlayer(player);
 
-            await this.save();
+            // await this.save();
+            await FaderManager.Instance.fadeOut()
+            this.isInit = true;
         }
     }
 
@@ -245,7 +255,7 @@ export class BatterManage extends Component {
             request("POST", `${IP}/web/rest/levelRest/save`, {
                 id: id,
                 ...DataManager.instance.getData()
-            });
+            }).catch(err => console.error(err));
         }
     }
 
@@ -281,6 +291,12 @@ export class BatterManage extends Component {
             const levelInfo = levels[`level${level}`]
             if (levelInfo) {
 
+                if (!this.isInit) {
+                    await FaderManager.Instance.mask()
+                } else {
+                    await FaderManager.Instance.fadeIn()
+                }
+
                 DataManager.instance.mapInfo = levelInfo.mapInfo;
                 DataManager.instance.mapRowCount = levelInfo.mapInfo.length;
                 DataManager.instance.mapColCount = levelInfo.mapInfo[0].length;
@@ -300,6 +316,9 @@ export class BatterManage extends Component {
                 await this.generatePlayer(player);
 
                 await this.save();
+
+                FaderManager.Instance.fadeOut()
+                this.isInit = true
             }
         }
 

@@ -1,4 +1,4 @@
-import { _decorator, AnimationClip, AnimationComponent } from 'cc';
+import { _decorator, AnimationClip, AnimationComponent, director } from 'cc';
 const { ccclass, property } = _decorator;
 import { ENTITY_STATE_ENUM, PARAMS_NAME_ENUM } from '../../Enums';
 import { getParamTrigget, getParamNumber, StateMachine } from '../../Base/StateMachine';
@@ -111,6 +111,9 @@ export class PlayerStateMachine extends StateMachine {
       const trigger = ['turn', 'block', 'attack'];
       if (trigger.find(value => name.includes(value))) {
         this.getComponent(PlayerManager).state = ENTITY_STATE_ENUM.IDLE;
+      }
+      if (name.includes('death')) {
+        director.loadScene('Battle');
       }
     })
   }
